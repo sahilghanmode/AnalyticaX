@@ -2,9 +2,14 @@ import React from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-const Login = ({onOpenChange}) => {
+const Login = ({onOpenChange, setSignupOpen}) => {
   function handleSubmit(){
 
+  }
+
+  function handleSignUpClick(){
+    onOpenChange()
+    setSignupOpen(true)
   }
 
   return (
@@ -39,6 +44,16 @@ const Login = ({onOpenChange}) => {
 
 
           </form>
+
+          <div className='flex  p-4'>
+            <div className='pr-1'>
+              Don't have an account?
+            </div>
+
+            <div onClick={handleSignUpClick} className='hover:underline'>
+              Sign Up
+            </div>
+          </div>
 
   
         </div>

@@ -18,8 +18,8 @@ const AuthButton = () => {
         </Button>
       </div>
 
-      {loginOpen && <Login onOpenChange={()=>setLoginOpen(false)} />}
-      {signupOpen && <SignUp onOpenChange={()=>setSignupOpen(false)} />}
+      {loginOpen && <Login onOpenChange={()=>setLoginOpen(false)} setSignupOpen={setSignupOpen}/>}
+      {signupOpen && <SignUp onOpenChange={()=>setSignupOpen(false)} setLoginOpen={setLoginOpen} />}
     </div>
   )
 }
