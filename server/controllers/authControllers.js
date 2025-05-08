@@ -146,6 +146,8 @@ export const sendOtp=async(req,res)=>{
 
 export const signup=async(req,res,next)=>{
     try {
+        console.log(req.body)
+
         const {fullName,email,password}=req.body;
 
         if(!email || !password){

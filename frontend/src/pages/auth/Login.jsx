@@ -1,15 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { loginApi } from '@/api/user.api'
 
 const Login = ({onOpenChange, setSignupOpen}) => {
-  function handleSubmit(){
-
-  }
+  const [loginInputs,setLoginInputs]=useState({
+    email:"",
+    password:""
+  })
 
   function handleSignUpClick(){
     onOpenChange()
     setSignupOpen(true)
+  }
+
+  const handleSubmit=async()=>{
+    if(!loginInputs.email){
+      console.log("email is required")
+      return
+    }
+    if(!loginInputs.password){
+      console.log("password is required")
+      return
+    }
+
+    const res=await loginApi(loginInputs)
+    if(res){
+      console.log("user successfully logged in")
+    }
+
   }
 
   return (
@@ -34,12 +53,12 @@ const Login = ({onOpenChange, setSignupOpen}) => {
           <form onSubmit={handleSubmit} className='space-y-3 pt-6'>
             <div className='space-y-2 pr-2 pl-4 pd-9'>
               <div className=' font-medium pt-0 pd-0'>Enter your Email</div>
-              <Input placeholder='name@example.com' />
+              <Input placeholder='name@example.com' onChange={(e)=>setLoginInputs({...loginInputs,email:e.target.value})} />
 
               <div className='font-medium '>Enter your password</div>
-              <Input placeholder=''/>
+              <Input placeholder='' type="password" onChange={(e)=>setLoginInputs({...loginInputs,password:e.target.value})} />
 
-              <Button className='w-full mt-5 cursor-pointer bg-emerald-500 hover:bg-emerald-600'>Log In</Button>
+              <Button className='w-full mt-5 cursor-pointer bg-emerald-500 hover:bg-emerald-600' type="submit">Log In</Button>
             </div>
 
 
