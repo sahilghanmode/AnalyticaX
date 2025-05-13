@@ -2,19 +2,22 @@ import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { loginApi } from '@/api/user.api'
+import { useAuth } from '@/lib/auth-context'
 
 const Login = ({onOpenChange, setSignupOpen}) => {
   const [loginInputs,setLoginInputs]=useState({
     email:"",
     password:""
   })
+  const {login}=useAuth()
 
   function handleSignUpClick(){
     onOpenChange()
     setSignupOpen(true)
   }
 
-  const handleSubmit=async()=>{
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
     if(!loginInputs.email){
       console.log("email is required")
       return
@@ -24,9 +27,11 @@ const Login = ({onOpenChange, setSignupOpen}) => {
       return
     }
 
-    const res=await loginApi(loginInputs)
-    if(res){
-      console.log("user successfully logged in")
+    try {
+      await login(loginInputs.email,loginInputs.password)
+      onOpenChange()
+    } catch (error) {
+      console.log(error.message)
     }
 
   }

@@ -27,7 +27,7 @@ const Body = () => {
                     size="lg"
                     asChild
                   >
-                    <Link href="#pricing">Analyze Your Data</Link>
+                    <Link href="/analyze">Analyze Your Data</Link>
                   </Button>
                   <Button variant="outline" size="lg" asChild>
                     <Link href="#features">
