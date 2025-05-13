@@ -25,14 +25,14 @@ export const verifyOtp=async(req,res)=>{
 
         if(!email){
             res.status(400).json({
-                success:"false",
+                success:false,
                 message:"email is missing"
             })
         }
 
         if(!otp){
             res.status(400).json({
-                success:"false",
+                success:false,
                 message:"otp is required"
             })
         }
@@ -52,7 +52,6 @@ export const verifyOtp=async(req,res)=>{
         }
 
         if (!user.isOTPValid(otp)) {
-            await user.save(); 
             return res.status(400).json({ 
               success: false, 
               message: 'Invalid or expired OTP' 
@@ -68,10 +67,9 @@ export const verifyOtp=async(req,res)=>{
             success: true, 
             message: 'Email verified successfully',
             user: {
+                fullName: user.fullName,
                 email: user.email,
-                isVerified: user.isVerified
-            
-        }
+            }
         });
 
 
@@ -151,14 +149,20 @@ export const signup=async(req,res,next)=>{
         const {fullName,email,password}=req.body;
 
         if(!email || !password){
-            return res.status(400).json({error:"username and password are required"});
+            return res.status(400).json({message:"username and password are required"});
         }
         if(!fullName){
             return res.status(400).json({
-                error:"Name is required"
+                message:"Name is required"
             })
         }
 
+        const alreadyExisting=await User.findOne({email})
+        if(alreadyExisting){
+            return res.status(409).json({
+                message:"User already exists"
+            })
+        }
         const user=await User.create({fullName,password,email});
         res.cookie("jwt",createToken(email,user.id),{
             maxAge,
@@ -168,6 +172,7 @@ export const signup=async(req,res,next)=>{
         return res.status(201).json({
             user:{
                 id:user.id,
+                fullName:user.fullName,
                 email:user.email,
                 
             }
@@ -177,7 +182,7 @@ export const signup=async(req,res,next)=>{
     } catch (error) {
         console.log({error});
         return res.status(500).json({
-            error:"Internal Server Error"
+            message:"Internal Server Error"
         })
     }
 }
@@ -189,25 +194,25 @@ export const login=async(req,res,next)=>{
 
         if(!email || !password){
             return res.status(400).json({
-                error:"Email and Password are required"
+                message:"Email and Password are required"
             })
         }
 
         const user=await User.findOne({email})
         if(!user){
             return res.status(404).json({
-                error:"User not found"
+                message:"User not found"
             })
         }
 
         if(!user.isVerified){
-            return res.status(400).send("user is not verified")
+            return res.status(400).json({message:"user is not verified"})
         }
         
         const auth=await compare(password,user.password)
 
         if(!auth){
-            return res.status(400).send("Password does not match")
+            return res.status(400).json({message:"Password does not match"})
         }
         res.cookie("jwt",createToken(email,user.id),{
             maxAge,
@@ -227,7 +232,7 @@ export const login=async(req,res,next)=>{
     } catch (error) {
         console.log({error})
         return res.status(500).json({
-            error:"Internal Server Error from Login Controller"
+            message:"Internal Server Error from Login Controller"
         })
     }
 }

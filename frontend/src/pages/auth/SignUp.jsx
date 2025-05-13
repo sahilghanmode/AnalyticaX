@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Eye, EyeOff } from 'lucide-react'
 import { sendOtp, signUpApi } from '@/api/user.api'
 import { toast } from 'sonner'
+import { useAuth } from '@/lib/auth-context'
 
 const SignUp = ({onOpenChange, setLoginOpen, setVerificationOpen, setEmailforVerification}) => {
   const [showpassword,setShowPassword]=useState(false)
@@ -13,6 +14,9 @@ const SignUp = ({onOpenChange, setLoginOpen, setVerificationOpen, setEmailforVer
     password:"",
     confirmPassword:""
   })
+  const [isLoading,setIsLoading]=useState(false)
+  const {signup}=useAuth()
+
 
   function handleLoginClick(){
     onOpenChange()
@@ -40,22 +44,14 @@ const SignUp = ({onOpenChange, setLoginOpen, setVerificationOpen, setEmailforVer
       toast.error("password and confirm password does not match")
       return
     }
+    setIsLoading(true)
 
-    const res=await signUpApi(signupInputs)
-
-    const success=await sendOtp(signupInputs)
-
-    setEmailforVerification(signupInputs.email)
-
-    setVerificationOpen(true) 
-
-    onOpenChange()
-    if(!res || !success){
-      console.log("something went wrong")
-      return 
+    try {
+      await signup(signupInputs.fullName, signupInputs.email, signupInputs.password, onOpenChange, setVerificationOpen, setEmailforVerification);
+    } catch (error) {
+      console.log("Signup error:", error.message);
     }
     
-
   }
   return (
     <div className='fixed cursor-pointer w-full left-0 top-0 h-[100dvh] bg-black/50 flex justify-center items-center' >

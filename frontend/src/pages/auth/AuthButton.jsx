@@ -2,13 +2,20 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import Login from './Login'
 import SignUp from './SignUp'
+import { useAuth } from '@/lib/auth-context'
 import Verification from './Verification'
+import { UserNav } from './UserNav'
 
 const AuthButton = () => {
     const [loginOpen,setLoginOpen]=useState(false)
     const [signupOpen,setSignupOpen]=useState(false)
     const [verificationOpen,setVerificationOpen]=useState(false)
     const [emailforVerification, setEmailforVerification]=useState("")
+    const { user, isAuthenticated } = useAuth()
+
+    if (isAuthenticated && user ) {
+      return <UserNav user={user} />
+    }
 
   return (
     <div>

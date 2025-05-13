@@ -4,6 +4,8 @@ import Home from './pages/Home/home'
 import Login from './pages/auth/Login'
 import SignUp from './pages/auth/SignUp'
 import Verification from './pages/auth/Verification'
+import Analyze from './pages/analyze/Analyze'
+import Profile from './pages/profile/Profile'
 
 function App() {
   
@@ -16,6 +18,8 @@ function App() {
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/signup' element={<SignUp/>}></Route>
           <Route path='/verify' element={<Verification/>}></Route>
+          <Route path='/analyze' element={<Analyze/>}> </Route>
+          <Route path='/profile' element={<Profile/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
