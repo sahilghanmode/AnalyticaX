@@ -4,7 +4,7 @@ import { FileSpreadsheet } from 'lucide-react'
 import { axiosInstance } from '../../../../utils/axios.js'
 import { useExcelData } from '@/lib/excel-context.jsx'
 
-const FileSelected = ({file}) => {
+const FileSelected = ({file, setVisualizationReady}) => {
   const { setData}=useExcelData()
   const [isUploading,setIsUploading]=useState(false)
 
@@ -31,6 +31,7 @@ const FileSelected = ({file}) => {
       alert('Failed to upload or parse the Excel file.')
     } finally {
       setIsUploading(false)
+      setVisualizationReady(true)
     }
   }
 

@@ -19,7 +19,6 @@ export const ExcelDataProvider = ({ children }) => {
     }
   }, [data])
 
-  console.log(data)
 
   return (
     <ExcelDataContext.Provider value={{ data, setData }}>

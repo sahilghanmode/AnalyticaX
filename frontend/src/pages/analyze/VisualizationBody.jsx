@@ -5,16 +5,19 @@ import FileNotSelected from './fileSelection/FileNotSelected'
 import { useAuth } from '@/lib/auth-context'
 import { Sparkles, AlertCircle } from 'lucide-react'
 
-const NotReady = () => {
+const NotReady = ({setVisualizationReady}) => {
     const [file,setFile]=useState(null)
     const {isAuthenticated}=useAuth()
 
   return (
     <div className='space-y-8'>
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6 ml-3">Analyze Your Excel Data</h1>
+      </div>
       <Card>
         <CardContent className="pt-6">
             <div className='border-2 border-dashed rounded-lg p-12 text-center border-gray-300 transition-colors'>
-                {file ? <FileSelected file={file}/> : <FileNotSelected setFile={setFile} file={file} /> }
+                {file ? <FileSelected file={file} setVisualizationReady={setVisualizationReady}/> : <FileNotSelected setFile={setFile} file={file} /> }
             </div>
 
             {isAuthenticated ? (
