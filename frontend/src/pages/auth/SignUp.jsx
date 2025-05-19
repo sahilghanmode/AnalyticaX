@@ -1,8 +1,7 @@
-import React, { use, useState } from 'react'
+import React, {  useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Eye, EyeOff } from 'lucide-react'
-import { sendOtp, signUpApi } from '@/api/user.api'
 import { toast } from 'sonner'
 import { useAuth } from '@/lib/auth-context'
 
@@ -54,8 +53,8 @@ const SignUp = ({onOpenChange, setLoginOpen, setVerificationOpen, setEmailforVer
     
   }
   return (
-    <div className='fixed cursor-pointer w-full left-0 top-0 h-[100dvh] bg-black/50 flex justify-center items-center' >
-      <div className='bg-white h-140 w-[420px] flex flex-col border rounded-lg'>
+    <div className='fixed cursor-pointer w-full left-0 top-0 h-[100dvh] bg-black/50 flex justify-center items-center' onClick={()=>onOpenChange()} >
+      <div className='bg-white h-140 w-[420px] flex flex-col border rounded-lg' onClick={(e)=>e.stopPropagation()}>
         <div className='pr-4 pt-4 pl-4 pb-2  flex justify-between'>
           <div className='font-bold text-2xl'>
             Create your account

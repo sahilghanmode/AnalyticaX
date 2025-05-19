@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import ProfileHeader from './ProfileHeader'
 import Projects from './Tabs/Projects'
@@ -12,6 +12,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState("visualizations")
+    useEffect(()=>{
+        console.log("hello")
+    },[])
 
   return (
     <div className="min-h-screen flex flex-col">

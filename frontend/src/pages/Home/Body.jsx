@@ -1,10 +1,11 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { ArrowRight,BarChart2, TrendingUp,PieChart, LineChart } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const Body = () => {
+  const navigate=useNavigate()
   return (
     <div>
       <main className='flex-1'>
@@ -23,17 +24,19 @@ const Body = () => {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button
-                    className="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700"
+                    className="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 cursor-pointer"
+                    onClick={()=>navigate("/analyze")}
                     size="lg"
-                    asChild
+          
+                  
                   >
-                    <Link href="/analyze">Analyze Your Data</Link>
+                    Analyze Your Data
                   </Button>
-                  <Button variant="outline" size="lg" asChild>
-                    <Link href="#features">
+                  <Button variant="outline" size="lg">
+                    
                       See Examples
                       <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
+                
                   </Button>
                 </div>
               </div>

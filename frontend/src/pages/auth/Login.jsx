@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { loginApi } from '@/api/user.api'
 import { useAuth } from '@/lib/auth-context'
 
 const Login = ({onOpenChange, setSignupOpen}) => {
@@ -37,9 +36,9 @@ const Login = ({onOpenChange, setSignupOpen}) => {
   }
 
   return (
-    <div className='fixed left-0 top-0 bg-black/50 flex justify-center items-center h-[100dvh] w-full '>
+    <div className='fixed left-0 top-0 bg-black/50 flex justify-center items-center h-[100dvh] w-full ' onClick={()=>onOpenChange()}>
 
-        <div className='h-100 w-[425px] bg-white cursor-pointer flex flex-col border rounded-lg ' >
+        <div className='h-100 w-[425px] bg-white cursor-pointer flex flex-col border rounded-lg ' onClick={(e)=>e.stopPropagation()}>
 
           <div className='pr-4 pt-4 pl-4 pb-2  flex justify-between'>
             <div className='font-bold text-2xl'>

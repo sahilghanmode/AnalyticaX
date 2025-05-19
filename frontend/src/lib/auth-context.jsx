@@ -8,13 +8,22 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check for saved user on mount
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-      setIsAuthenticated(true);
+    const getCurrentUser = async function () {
+      try {
+        const { data } = await axiosInstance.get('/auth/getCurrentUser', { withCredentials: true, });
+        console.log('user', data);
+        if (data) {
+          setUser(data);
+          setIsAuthenticated(true);
+        }
+
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+    getCurrentUser()
   }, []);
 
   const login = async (email, password) => {
@@ -26,7 +35,6 @@ export function AuthProvider({ children }) {
 
       setUser(user);
       setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(user));
 
       // Optional: toast or alert
       toast.error(message || "Logged in successfully");
@@ -34,35 +42,35 @@ export function AuthProvider({ children }) {
       // Show backend error message if available
       const message =
         error.response?.data?.message || error.response?.data?.error || "Login failed";
-        toast.error(message); // or use a toast
-        console.error("Login error:", message);
-        throw new Error(message); // forward it if needed
+      toast.error(message); // or use a toast
+      console.error("Login error:", message);
+      throw new Error(message); // forward it if needed
     }
   };
 
-  
 
-  const signup = async (fullName, email, password,onOpenChange, setVerificationOpen, setEmailforVerification) => {
-    
+
+  const signup = async (fullName, email, password, onOpenChange, setVerificationOpen, setEmailforVerification) => {
+
     try {
-      const res=await axiosInstance.post("/auth/signup",{fullName,email,password})
-      if(res.status==201 && res.data.user){
-        const otpRes=await axiosInstance.post("/auth/send-otp",{email})
+      const res = await axiosInstance.post("/auth/signup", { fullName, email, password })
+      if (res.status == 201 && res.data.user) {
+        const otpRes = await axiosInstance.post("/auth/send-otp", { email })
         toast.message(otpRes.data.message)
-        if(otpRes.status===200 ){
+        if (otpRes.status === 200) {
 
           setEmailforVerification(email)
           setVerificationOpen(true)
           onOpenChange()
 
-        }else{
+        } else {
           toast.error(otpRes.data.message)
         }
 
-      }else{
+      } else {
         toast.error(res.data.message)
       }
-    
+
     } catch (error) {
       console.log("Signup error:", error.message);
 
@@ -82,30 +90,30 @@ export function AuthProvider({ children }) {
         toast.error("Failed to send OTP. Please try again.");
       }
     }
-    
+
   };
 
-  const verify=async(email,otp)=>{
+  const verify = async (email, otp) => {
     try {
-      const res=await axiosInstance.post("/auth/verify",{email,otp})
-      if(res.status==200){
-        const user=res.data.user
+      const res = await axiosInstance.post("/auth/verify", { email, otp })
+      if (res.status == 200) {
+        const user = res.data.user
         setUser(user)
-        localStorage.setItem("user",JSON.stringify(user))
         setIsAuthenticated(true)
-    
+
       }
     } catch (error) {
       toast.error(error.message)
     }
   }
-  
+
 
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem("user");
+
   };
+
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout, verify }}>

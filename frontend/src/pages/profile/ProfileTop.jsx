@@ -4,10 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import { useAuth } from '@/lib/auth-context'
 
 
 const ProfileTop = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const {user} = useAuth();
 
 
     const initials = user && user.fullName
@@ -29,8 +30,8 @@ const ProfileTop = () => {
                       <AvatarImage src={user?.image || ""} alt={user?.fullName || user?.email || ""} />
                       <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
                     </Avatar>
-                    <h2 className="text-2xl font-bold">{user?.fullName || "User"}</h2>
-                    <p className="text-gray-500">{user?.email}</p>
+                    {/* <h2 className="text-2xl font-bold">{user?.fullName || "User"}</h2>
+                    <p className="text-gray-500">{user?.email}</p> */}
                     <Button className="mt-4 w-full bg-emerald-500 hover:bg-emerald-600">Edit Profile</Button>
                   </div>
                 </CardContent>
