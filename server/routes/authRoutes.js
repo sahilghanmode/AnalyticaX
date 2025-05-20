@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signup,login,sendOtp,verifyOtp, getCurrentUser } from "../controllers/authControllers.js";
+import { signup,login,sendOtp,verifyOtp, getCurrentUser, logoutUser } from "../controllers/authControllers.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 
@@ -10,5 +10,6 @@ authRoutes.post("/login",login)
 authRoutes.post("/send-otp",sendOtp)
 authRoutes.post("/verify",verifyOtp)
 authRoutes.get('/getCurrentUser' , verifyJWT , getCurrentUser);
+authRoutes.get('/logout',verifyJWT,logoutUser)
 
 export default authRoutes

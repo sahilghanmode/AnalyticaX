@@ -12,7 +12,6 @@ export function AuthProvider({ children }) {
     const getCurrentUser = async function () {
       try {
         const { data } = await axiosInstance.get('/auth/getCurrentUser', { withCredentials: true, });
-        console.log('user', data);
         if (data) {
           setUser(data);
           setIsAuthenticated(true);
@@ -108,7 +107,14 @@ export function AuthProvider({ children }) {
   }
 
 
-  const logout = () => {
+  const logout = async (user) => {
+    try {
+      const id=user.id
+      const res=await axiosInstance("/auth/logout",{id})
+    
+    } catch (error) {
+      
+    }
     setUser(null);
     setIsAuthenticated(false);
 

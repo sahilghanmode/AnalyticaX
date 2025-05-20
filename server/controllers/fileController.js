@@ -1,6 +1,6 @@
-// server/controller/fileController.js
 import fs from 'fs'
 import { read, utils } from 'xlsx'
+import { uploadFileToS3 } from '../utils/uploadFileToS3.js'
 
 export const handleExcelUpload = async (req, res, next) => {
   try {
@@ -10,11 +10,12 @@ export const handleExcelUpload = async (req, res, next) => {
 
 
     const filePath = req.file.path
-    const workbook = read(fs.readFileSync(filePath))
+    const fileBuffer = fs.readFileSync(filePath)
+    const awsUpload = await uploadFileToS3(fileBuffer, req.file.originalname)
+    console.log(awsUpload.url);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]]
     const jsonData = utils.sheet_to_json(worksheet)
 
-    console.log(jsonData)
     res.status(200).json({
       success: true,
       message: "File uploaded and parsed successfully",

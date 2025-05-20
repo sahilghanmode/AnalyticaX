@@ -36,6 +36,9 @@ const userSchema=new mongoose.Schema({
           default: 0
         }
     },
+    file : {
+        type : String,
+    },
     role:{
         type:String,
         default:"user"

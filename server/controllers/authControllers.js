@@ -237,6 +237,29 @@ export const login = async (req, res, next) => {
     }
 }
 
+export const logoutUser=async(req,res,next)=>{
+    try {
+        const user=req.userId
+        await User.findByIdAndUpdate(userId, {
+            $set: { refreshToken: undefined }
+        })
+        const options = {
+            expires: new Date(0),
+            httpOnly: true,
+            // secure: true
+        }
+        res.status(200)
+            .clearCookie("accessToken", null, options)
+            .clearCookie("refreshToken", null, options)
+            .json({ success: true, message: "user logged out" })
+    } catch (error) {
+        console.log("error from logoutUser")
+        res.status(500).json({
+            message:"Internal server error"
+        })
+    }
+}
+
 export const getCurrentUser = async (req, res, next) => {
     try {
         const user = req.user;
