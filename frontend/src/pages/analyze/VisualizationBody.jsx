@@ -4,9 +4,11 @@ import FileSelected from './fileSelection/FileSelected'
 import FileNotSelected from './fileSelection/FileNotSelected'
 import { useAuth } from '@/lib/auth-context'
 import { Sparkles, AlertCircle } from 'lucide-react'
+import { useExcelData } from '@/lib/excel-context'
 
 const NotReady = ({setVisualizationReady}) => {
-    const [file,setFile]=useState(null)
+  const {file,setFile}=useExcelData()
+    
     const {isAuthenticated}=useAuth()
 
   return (
@@ -17,7 +19,7 @@ const NotReady = ({setVisualizationReady}) => {
       <Card>
         <CardContent className="pt-6">
             <div className='border-2 border-dashed rounded-lg p-12 text-center border-gray-300 transition-colors'>
-                {file ? <FileSelected file={file} setVisualizationReady={setVisualizationReady}/> : <FileNotSelected setFile={setFile} file={file} /> }
+                {file ? <FileSelected file={file} setVisualizationReady={setVisualizationReady} setFile={setFile}/> : <FileNotSelected setFile={setFile} file={file} /> }
             </div>
 
             {isAuthenticated ? (
@@ -31,7 +33,7 @@ const NotReady = ({setVisualizationReady}) => {
                   </div>
                 </div>
             ) :(
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3 mt-5`">
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3 mt-5">
                   <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
                   <div>
                     <h3 className="font-medium text-amber-800">Sign in to access all features</h3>

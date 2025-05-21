@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { FileSpreadsheet } from 'lucide-react'
+import { FileSpreadsheet, RefreshCw } from 'lucide-react'
 import { axiosInstance } from '../../../../utils/axios.js'
 import { useExcelData } from '@/lib/excel-context.jsx'
 
-const FileSelected = ({file, setVisualizationReady}) => {
-  const { setData}=useExcelData()
-  const [isUploading,setIsUploading]=useState(false)
+
+const FileSelected = ({  setVisualizationReady }) => {
+  const { setData, file,setFile } = useExcelData()
+  const [isUploading, setIsUploading] = useState(false)
 
   const handleUpload = async () => {
     if (!file) return
@@ -16,12 +17,13 @@ const FileSelected = ({file, setVisualizationReady}) => {
       const formData = new FormData()
       formData.append('excelFile', file) // 'excelFile' must match backend multer field name
 
-      const res = await axiosInstance.post("/file/uploadfile",formData,{
+      const res = await axiosInstance.post("/file/uploadfile", formData, {
         headers: {
-      'Content-Type': 'multipart/form-data',}
+          'Content-Type': 'multipart/form-data',
+        }
       })
 
-      const result =res.data
+      const result = res.data
       if (!result.success) throw new Error(result.message || 'Upload failed')
 
       setData(result.data)
@@ -33,6 +35,10 @@ const FileSelected = ({file, setVisualizationReady}) => {
       setIsUploading(false)
       setVisualizationReady(true)
     }
+  }
+
+  const handleUploadAnother = () => {
+    setFile(null)
   }
 
 
@@ -51,6 +57,11 @@ const FileSelected = ({file, setVisualizationReady}) => {
         disabled={isUploading}
       >
         {isUploading ? "Processing..." : "Generate Visualization"}
+      </Button>
+
+      <Button variant="outline" className="flex items-center w-full cursor-pointer" onClick={handleUploadAnother}>
+        <RefreshCw className="h-4 w-4 mr-2" />
+        Upload Another File
       </Button>
     </div>
   )

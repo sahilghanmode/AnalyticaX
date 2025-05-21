@@ -5,6 +5,7 @@ const ExcelDataContext = createContext(undefined)
 
 export const ExcelDataProvider = ({ children }) => {
   const [data, setData] = useState([])
+  const [file,setFile]=useState(null)
 
   useEffect(() => {
     const savedData = sessionStorage.getItem('parsedExcelData')
@@ -21,7 +22,7 @@ export const ExcelDataProvider = ({ children }) => {
 
 
   return (
-    <ExcelDataContext.Provider value={{ data, setData }}>
+    <ExcelDataContext.Provider value={{ data, setData, file,setFile }}>
       {children}
     </ExcelDataContext.Provider>
   )

@@ -1,11 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ShieldAlert, Lock, Sparkles } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { DataSummary } from './DataSummary'
+import { useExcelData } from '@/lib/excel-context'
+import { axiosInstance } from '../../../../utils/axios.js'
 
 const Available = () => {
+    const {data}=useExcelData()
     const [aiInsightsEnabled, setAIInsightsEnabled] = useState(false)
     const [isLoading,setIsLoading]=useState(false)
+    const [isGeneratingSummary, setIsGeneratingSummary] = useState(false)
+    const [dataSummary, setDataSummary] = useState("this is data summary")
+
+    const handleEnableAIInsights=()=>{
+        setAIInsightsEnabled(true)
+    }
+
+    useEffect(() => {
+    const fetchSummary = async () => {
+      if (!aiInsightsEnabled || !data || data.length === 0) return;
+
+      setIsGeneratingSummary(true);
+      try {
+        const res = await axiosInstance.post("/file/aiInsights",{data})
+
+        const result = res.data
+        if (result.success) {
+          setDataSummary(result.insights);
+        } else {
+          setDataSummary("⚠️ Failed to fetch insights: " + result.message);
+        }
+      } catch (err) {
+        setDataSummary("❌ Error connecting to AI API.");
+        console.error(err);
+      } finally {
+        setIsGeneratingSummary(false);
+      }
+    };
+
+    fetchSummary();
+  }, [aiInsightsEnabled]);
 
     return (
         !aiInsightsEnabled ? (
@@ -24,7 +59,7 @@ const Available = () => {
                         <span className="text-sm text-amber-700">Your data privacy is important to us</span>
                     </div>
                     <Button
-                        // onClick={handleEnableAIInsights}
+                        onClick={handleEnableAIInsights}
                         className="bg-blue-500 hover:bg-blue-600 flex items-center cursor-pointer"
                     >
                         <Sparkles className="h-4 w-4 mr-2" />
@@ -33,7 +68,7 @@ const Available = () => {
                 </CardContent>
             </Card>
         ) : (
-            <DataSummary isLoading={isGeneratingSummary} summary={dataSummary} fileName={file?.name || ""} />
+            <DataSummary isLoading={isGeneratingSummary} summary={dataSummary} />
         )
     )
 }
