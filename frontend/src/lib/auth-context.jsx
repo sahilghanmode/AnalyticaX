@@ -107,13 +107,13 @@ export function AuthProvider({ children }) {
   }
 
 
-  const logout = async (user) => {
+  const logout = async () => {
     try {
-      const id=user.id
-      const res=await axiosInstance("/auth/logout",{id})
-    
-    } catch (error) {
+      const id=user._id
+      const res=await axiosInstance.post("/auth/logout",{id},{withCredentials:true})
       
+    } catch (error) {
+      console.log("error", error)
     }
     setUser(null);
     setIsAuthenticated(false);

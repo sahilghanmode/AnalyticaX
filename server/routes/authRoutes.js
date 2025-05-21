@@ -10,6 +10,6 @@ authRoutes.post("/login",login)
 authRoutes.post("/send-otp",sendOtp)
 authRoutes.post("/verify",verifyOtp)
 authRoutes.get('/getCurrentUser' , verifyJWT , getCurrentUser);
-authRoutes.get('/logout',verifyJWT,logoutUser)
+authRoutes.post('/logout',verifyJWT,logoutUser)
 
 export default authRoutes

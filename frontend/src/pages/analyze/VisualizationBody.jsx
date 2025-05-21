@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import FileSelected from './fileSelection/FileSelected'
 import FileNotSelected from './fileSelection/FileNotSelected'

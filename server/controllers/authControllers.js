@@ -218,6 +218,7 @@ export const login = async (req, res, next) => {
             maxAge,
             secure: true,
             sameSite: "None",
+            httpOnly: true
         })
         console.log("User is logged in")
         return res.status(200).json({
@@ -239,18 +240,19 @@ export const login = async (req, res, next) => {
 
 export const logoutUser=async(req,res,next)=>{
     try {
-        const user=req.userId
-        await User.findByIdAndUpdate(userId, {
+        console.log("working")
+        const user=req.id
+        await User.findByIdAndUpdate(user, {
             $set: { refreshToken: undefined }
         })
-        const options = {
-            expires: new Date(0),
+        const options =  {
+            secure: true,
+            sameSite: "None",
             httpOnly: true,
-            // secure: true
+            path: "/",
         }
         res.status(200)
-            .clearCookie("accessToken", null, options)
-            .clearCookie("refreshToken", null, options)
+            .clearCookie("authToken",  options)
             .json({ success: true, message: "user logged out" })
     } catch (error) {
         console.log("error from logoutUser")
