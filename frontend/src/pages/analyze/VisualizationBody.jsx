@@ -13,7 +13,9 @@ const NotReady = ({setVisualizationReady}) => {
 
   return (
     <div className='space-y-8'>
-      <div className="max-w-6xl mx-auto">
+      <div 
+        // className="max-w-6xl mx-auto"
+      >
         <h1 className="text-3xl font-bold mb-6 ml-3">Analyze Your Excel Data</h1>
       </div>
       <Card>

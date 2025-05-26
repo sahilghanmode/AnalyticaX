@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { LogOut } from 'lucide-react'
+import { LogOut, BarChart2, Menu } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/lib/auth-context'
 
@@ -14,21 +14,26 @@ const ProfileHeader = () => {
     }
   return (
     <div>
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div
-              className="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center cursor-pointer"
-              onClick={() => navigate("/")}
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5 text-white" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 12h18M3 6h18M3 18h18" />
-              </svg>
-            </div>
-            <span className="text-xl font-bold cursor-pointer" onClick={() => navigate("/")}>
-              AnalyticaX
-            </span>
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2 pl-8 cursor-pointer">
+            
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center">
+                <BarChart2 className="h-4 w-4 text-white" />
+              </div>
+              <div onClick={()=>navigate("/")}>
+                <span className="text-xl font-bold">AnalyticaX</span>
+              </div>
+           
           </div>
+
+          {/* <div className="md:hidden">
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+          </div> */}
+
           <Button variant="ghost" className="text-red-500 hover:text-red-700 hover:bg-red-50"  onClick={handleLogout}>
             <LogOut className="h-4 w-4 mr-2" />
             Log out

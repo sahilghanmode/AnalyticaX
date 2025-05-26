@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/lib/auth-context'
+import EditProfile from './Components/EditProfile'
 
 
 const ProfileTop = () => {
     const {user} = useAuth();
+    const [updateOpen,setUpdateOpen]=useState(false)
 
 
     const initials = user && user.fullName
@@ -32,7 +34,7 @@ const ProfileTop = () => {
                     </Avatar>
                     {/* <h2 className="text-2xl font-bold">{user?.fullName || "User"}</h2>
                     <p className="text-gray-500">{user?.email}</p> */}
-                    <Button className="mt-4 w-full bg-emerald-500 hover:bg-emerald-600">Edit Profile</Button>
+                    <Button className="mt-4 w-full bg-emerald-500 hover:bg-emerald-600 cursor-pointer" onClick={()=>setUpdateOpen(true)} >Edit Profile</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -73,6 +75,7 @@ const ProfileTop = () => {
                   </div>
                 </CardContent>
               </Card>
+              {updateOpen && <EditProfile onOpenChange={()=>setUpdateOpen(false)} />}
             </div>
           </div>
   )

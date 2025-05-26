@@ -21,12 +21,12 @@ const Header = () => {
            
           </div>
 
-          <div className="md:hidden">
+          {/* <div className="md:hidden">
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle menu</span>
             </Button>
-          </div>
+          </div> */}
 
           <AuthButton className=''/>
         </div>

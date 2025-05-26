@@ -25,24 +25,47 @@ ChartJS.register(
 )
 
 
-const VisualizationDisplay = ({ chartType }) => {
-    const {data}=useExcelData()
+const VisualizationDisplay = ({ chartType, xAxisColumn, yAxisColumn }) => {
+    const { data } = useExcelData()
     if (!data || data.length === 0) return <p>No data available</p>
 
+    const colorPalette = [
+        'rgba(75, 192, 192, 0.6)',   // Teal
+        'rgba(255, 99, 132, 0.6)',   // Red
+        'rgba(54, 162, 235, 0.6)',   // Blue
+        'rgba(255, 206, 86, 0.6)',   // Yellow
+        'rgba(153, 102, 255, 0.6)',  // Purple
+        'rgba(255, 159, 64, 0.6)'    // Orange
+    ];
+
+    const borderColors = [
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+    ];
+
     const keys = Object.keys(data[0])
-    const labelKey = keys[0] 
-    const valueKeys = keys.slice(1) 
+    const labelKey = keys[0]
+    const valueKeys = keys.slice(1)
+
+    console.log("Raw data:", data);
+    console.log("X axis key:", xAxisColumn);
+    console.log("Y axis keys:", yAxisColumn);
+
 
     const chartData = {
-        labels: data.map(item => item[labelKey]),
-        datasets: valueKeys.map((key, index) => ({
+        labels: data.map(item => item?.[xAxisColumn]),
+        datasets: yAxisColumn.map((key, index) => ({
             label: key,
-            data: data.map(item => item[key]),
-            backgroundColor: `rgba(${100 + index * 40}, ${150 - index * 20}, ${200 - index * 30}, 0.6)`,
-            borderColor: `rgba(${100 + index * 40}, ${150 - index * 20}, ${200 - index * 30}, 1)`,
-            borderWidth: 1
-        }))
-    }
+            data: data.map(item => item?.[key]),
+            backgroundColor: colorPalette[index % colorPalette.length],
+            borderColor: borderColors[index % borderColors.length],
+            borderWidth: 1,
+        })),
+    };
 
     const chartOptions = {
         responsive: true,

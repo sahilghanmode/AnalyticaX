@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home/home'
 import Login from './pages/auth/Login'
@@ -7,7 +6,6 @@ import Verification from './pages/auth/Verification'
 import Analyze from './pages/analyze/Analyze'
 import Profile from './pages/profile/Profile'
 import PrivateRoute from './lib/ProtectedRoute'
-import { useAuth } from './lib/auth-context'
 
 function App() {
 
@@ -22,6 +20,8 @@ function App() {
           <Route path='/analyze' element={<Analyze />}> </Route>
 
           <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>}></Route>
+
+          <Route path='*' element={<Navigate to='/' replace/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

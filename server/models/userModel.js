@@ -39,6 +39,16 @@ const userSchema=new mongoose.Schema({
     file : {
         type : String,
     },
+    bio:{
+        type : String,
+        default:"",
+        maxLenght:250
+    },
+    mobileNumber:{
+        type:String,
+        required:false,
+        match: [/^\d{10}$/, 'Please enter a valid 10-digit mobile number']
+    },
     role:{
         type:String,
         default:"user"

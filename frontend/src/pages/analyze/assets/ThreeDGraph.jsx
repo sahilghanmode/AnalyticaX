@@ -41,6 +41,7 @@ export const ThreeDGraph = () => {
         layout={{
           title: `3D Scatter Plot: ${xKey} vs ${yKey} vs ${zKey}`,
           autosize: true,
+          width:undefined,
           height: 500,
           scene: {
             xaxis: { title: xKey },
@@ -48,6 +49,7 @@ export const ThreeDGraph = () => {
             zaxis: { title: zKey },
           },
         }}
+        style={{width:'100%', height:'100%'}}
       />
     </div>
   );

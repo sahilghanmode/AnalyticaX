@@ -22,11 +22,11 @@ const Profile = () => {
         <main className="flex-1 container mx-auto px-4 py-12">
             <div className="max-w-5xl mx-auto">
                 <ProfileTop/>
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full ">
-                    <TabsList className="grid grid-cols-3 w-full max-w-md mx-auto mb-8 cursor-pointer">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                    <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto mb-8">
                         <TabsTrigger value="projects">Projects</TabsTrigger>
                         <TabsTrigger value="visualizations">Visualizations</TabsTrigger>
-                        <TabsTrigger value="settings">Settings</TabsTrigger>
+                        {/* <TabsTrigger value="settings">Settings</TabsTrigger> */}
                     </TabsList>
 
                     <TabsContent value="projects" className="space-y-6">
