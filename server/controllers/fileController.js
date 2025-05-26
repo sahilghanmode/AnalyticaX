@@ -1,8 +1,9 @@
 import fs from 'fs'
 import { read, utils } from 'xlsx'
 import path from 'path'
+import axios from 'axios'
 import { fileURLToPath } from 'url'
-import { uploadParsedJsonToS3 } from '../utils/uploadFileToS3.js'
+import { uploadParsedJsonToS3 } from '../utils/s3Config.js'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import File from '../models/fileModel.js'
 import Visualization from '../models/visualizationModel.js'
@@ -66,6 +67,8 @@ export const saveVisualization = async (req, res, next) => {
     const userId = req.body.userId
     const { chartType, is3d, xAxisKey, yAxisKey, zAxisKey, fileName } = req.body
 
+    console.log(req.body)
+
     let file = await File.findOne({ fileName, uploadedBy: userId })
     if (!file) {
       const filePath = path.join(__dirname, '..', 'media', fileName)
@@ -86,6 +89,7 @@ export const saveVisualization = async (req, res, next) => {
 
     let visualization = await Visualization.findOne({
       file: file._id,
+      userId,
       chartType,
       is3d,
       xAxisKey,
@@ -96,6 +100,7 @@ export const saveVisualization = async (req, res, next) => {
     if (!visualization) {
       visualization = await Visualization.create({
         file: file._id,
+        userId,
         chartType,
         is3d,
         xAxisKey,
@@ -111,5 +116,61 @@ export const saveVisualization = async (req, res, next) => {
 
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+export const getHistory=async(req,res,next)=>{
+  try {
+    const userId=req.query.userId
+    const visualizations=await Visualization.find().populate({
+      path:'file',
+      match:{uploadedBy:userId}
+    })
+
+    const filtered = visualizations.filter(v => v.file !== null);
+    const reversedFilter=filtered.reverse()
+
+    res.status(200).json({success:true, data:reversedFilter})
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+export const getVisualizationbyId=async(req,res)=>{
+  try {
+    const {id}=req.query
+    if(!id){
+      return res.status(400).json({success:false, message:"visualization id required"})
+    }
+    const visualization=await Visualization.findById(id).populate('file')
+    
+    if(!visualization){
+      return res.status(400).json({success:false, message:"visualization not found"})
+    }
+
+    const fileUrl=visualization.file.fileUrl
+    
+
+    if(!fileUrl){
+      return res.status(400).json({success:false, message:"url not found"})
+    }
+
+    const s3Response=await axios.get(fileUrl)
+
+  
+
+    if(!s3Response){
+      return res.status(500).json({success:false, message:"failed to fetch data try again later"})
+    }
+
+    return res.status(200).json({
+      success:true,
+      visualization,
+      jsonData:s3Response.data
+    })
+
+  } catch (error) {
+    console.error("Error in getVisualizationbyId:", error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 }

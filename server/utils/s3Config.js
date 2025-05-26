@@ -23,6 +23,7 @@ export async function uploadParsedJsonToS3(jsonData, originalFileName) {
         Key: `parsed/${jsonFileName}`,
         Body: jsonString,
         ContentType: "application/json",
+        ACL:"public-read"
     };
 
     try {

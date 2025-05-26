@@ -6,6 +6,11 @@ const visualizationSchema = new mongoose.Schema({
         ref: 'File',
         required: true
     },
+    userId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required:true
+    },
     chartType: {
         type: String,
         required: true

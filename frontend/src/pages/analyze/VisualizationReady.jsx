@@ -35,8 +35,7 @@ const Done = ({ setVisualizationReady }) => {
         setYAxisColumn((prev) => prev.length > 0 ? prev : [columns[1]]);
       }
     }
-  }, [data]);
-
+  }, [data])
 
   const downloadPNG = () => {
     const node = document.getElementById('visualization-container');
@@ -96,26 +95,32 @@ const Done = ({ setVisualizationReady }) => {
 
   const handleSaveVisualization = async () => {
     try {
-      const is3d=(viewMode==="3d")
-      const fileName=file.name
-      const yAxisKey=yAxisColumn[0]
-      const userId=user._id
-      const body={
+      const is3d = (viewMode === "3d")
+      const fileName = file.name
+      let yAxisKey;
+      if (Array.isArray(yAxisColumn)) {
+        yAxisKey = yAxisColumn[0];  // first element if array
+      } else {
+        yAxisKey = yAxisColumn;     // already string
+      }
+
+      const userId = user._id
+      const body = {
         chartType,
         is3d,
-        xAxisKey:xAxisColumn,
+        xAxisKey: xAxisColumn,
         yAxisKey,
-        zAxisKey:zAxisColumn,
+        zAxisKey: zAxisColumn,
         fileName,
         userId
-        
-      }
-      const res=await axiosInstance.post("/file/saveVisualization",body)
 
-      if(res.status==400){
+      }
+      const res = await axiosInstance.post("/file/saveVisualization", body)
+
+      if (res.status == 400) {
         toast.message("visualization already exists")
       }
-      if(res.status==200){
+      if (res.status == 200) {
         toast.message("visualization saved successfully")
       }
     } catch (error) {
