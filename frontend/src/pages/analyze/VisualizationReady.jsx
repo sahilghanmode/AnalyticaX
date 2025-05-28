@@ -14,7 +14,7 @@ import { useExcelData } from '@/lib/excel-context'
 import { axiosInstance } from '../../../utils/axios.js'
 import { toast } from 'sonner'
 
-const Done = ({ setVisualizationReady }) => {
+const Done = ({ setVisualizationReady, visualizationData }) => {
 
   const [chartType, setChartType] = useState("bar")
   const [viewMode, setViewMode] = useState("2d")
@@ -25,17 +25,36 @@ const Done = ({ setVisualizationReady }) => {
   const [availableColumns, setAvailableColumns] = useState([])
   const { data, file } = useExcelData()
 
-
   useEffect(() => {
     if (data && data.length > 0) {
       const columns = Object.keys(data[0]);
       if (columns.length >= 2) {
         setAvailableColumns(columns);
         setXAxisColumn((prev) => prev || columns[0]);
-        setYAxisColumn((prev) => prev.length > 0 ? prev : [columns[1]]);
+        setYAxisColumn((prev) => prev.length > 0 ? prev : [columns[1]])
+        
+      }
+      if(columns.length>=3){
+        setZAxisColumn((prev)=>prev.length>0 ? prev: [columns[2]])
       }
     }
   }, [data])
+
+  useEffect(()=>{
+    if(visualizationData){
+      if(visualizationData.is3d){
+        setViewMode("3d")
+      }
+      if(!visualizationData.is3d){
+        setChartType(visualizationData.chartType)
+      }
+      
+      setXAxisColumn(visualizationData.xAxisKey)
+      setYAxisColumn(visualizationData.yAxisKey)
+
+    }
+  },[data])
+
 
   const downloadPNG = () => {
     const node = document.getElementById('visualization-container');
@@ -96,7 +115,13 @@ const Done = ({ setVisualizationReady }) => {
   const handleSaveVisualization = async () => {
     try {
       const is3d = (viewMode === "3d")
-      const fileName = file.name
+      let fileName;
+      if(visualizationData){
+        fileName=visualizationData.file.fileName
+      }else{
+        fileName = file.name
+      }
+      
       let yAxisKey;
       if (Array.isArray(yAxisColumn)) {
         yAxisKey = yAxisColumn[0];  // first element if array
@@ -104,17 +129,26 @@ const Done = ({ setVisualizationReady }) => {
         yAxisKey = yAxisColumn;     // already string
       }
 
+      let zAxisKey
+      if(Array.isArray(zAxisColumn)){
+        zAxisKey=zAxisColumn[0]
+      }else{
+        zAxisKey=zAxisColumn
+      }
+
       const userId = user._id
+      console.log(userId)
       const body = {
         chartType,
         is3d,
         xAxisKey: xAxisColumn,
         yAxisKey,
-        zAxisKey: zAxisColumn,
+        zAxisKey,
         fileName,
         userId
 
       }
+
       const res = await axiosInstance.post("/file/saveVisualization", body)
 
       if (res.status == 400) {
@@ -124,7 +158,8 @@ const Done = ({ setVisualizationReady }) => {
         toast.message("visualization saved successfully")
       }
     } catch (error) {
-      
+      console.log("Error saving visualization", error)
+      toast.error("Failed to save visualization. Please try again.")
     }
   }
 

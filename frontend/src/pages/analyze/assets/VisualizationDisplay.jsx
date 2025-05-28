@@ -51,10 +51,6 @@ const VisualizationDisplay = ({ chartType, xAxisColumn, yAxisColumn }) => {
     const labelKey = keys[0]
     const valueKeys = keys.slice(1)
 
-    console.log("Raw data:", data);
-    console.log("X axis key:", xAxisColumn);
-    console.log("Y axis keys:", yAxisColumn);
-
 
     const chartData = {
         labels: data.map(item => item?.[xAxisColumn]),

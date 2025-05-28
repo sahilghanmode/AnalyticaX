@@ -64,10 +64,11 @@ export const AiInsights = async (req, res, next) => {
 
 export const saveVisualization = async (req, res, next) => {
   try {
+    
     const userId = req.body.userId
     const { chartType, is3d, xAxisKey, yAxisKey, zAxisKey, fileName } = req.body
 
-    console.log(req.body)
+
 
     let file = await File.findOne({ fileName, uploadedBy: userId })
     if (!file) {
@@ -77,13 +78,13 @@ export const saveVisualization = async (req, res, next) => {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]]
       const jsonData = utils.sheet_to_json(worksheet)
       const awsUpload = await uploadParsedJsonToS3(jsonData, fileName)
-      console.log(awsUpload)
 
       file = await File.create({
         fileName,
         fileUrl: awsUpload.url,
         uploadedBy: userId,
       })
+
 
     }
 
@@ -142,26 +143,31 @@ export const getVisualizationbyId=async(req,res)=>{
     if(!id){
       return res.status(400).json({success:false, message:"visualization id required"})
     }
+
     const visualization=await Visualization.findById(id).populate('file')
     
     if(!visualization){
       return res.status(400).json({success:false, message:"visualization not found"})
     }
-
-    const fileUrl=visualization.file.fileUrl
+    console.log(visualization)
     
 
-    if(!fileUrl){
+    const filesUrl=visualization.file.fileUrl
+    
+
+    if(!filesUrl){
       return res.status(400).json({success:false, message:"url not found"})
     }
 
-    const s3Response=await axios.get(fileUrl)
+    const s3Response=await axios.get(filesUrl)
 
   
 
     if(!s3Response){
       return res.status(500).json({success:false, message:"failed to fetch data try again later"})
     }
+
+
 
     return res.status(200).json({
       success:true,

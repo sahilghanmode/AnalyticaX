@@ -35,10 +35,8 @@ export function AuthProvider({ children }) {
       setUser(user);
       setIsAuthenticated(true);
 
-      // Optional: toast or alert
       toast.error(message || "Logged in successfully");
     } catch (error) {
-      // Show backend error message if available
       const message =
         error.response?.data?.message || error.response?.data?.error || "Login failed";
       toast.error(message); // or use a toast

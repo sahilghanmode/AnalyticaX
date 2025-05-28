@@ -34,7 +34,7 @@ export function DataSummary({ summary,isLoading }) {
               <FileSpreadsheet className="h-4 w-4 mr-1" />
               <span className="truncate">{fileName}</span>
             </div>
-            <ReactMarkdown>{summary}</ReactMarkdown>
+            <ReactMarkdown className='max-h-100'>{summary}</ReactMarkdown>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-8 text-center">
