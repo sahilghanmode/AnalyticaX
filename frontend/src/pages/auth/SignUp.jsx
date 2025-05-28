@@ -49,6 +49,8 @@ const SignUp = ({onOpenChange, setLoginOpen, setVerificationOpen, setEmailforVer
       await signup(signupInputs.fullName, signupInputs.email, signupInputs.password, onOpenChange, setVerificationOpen, setEmailforVerification);
     } catch (error) {
       console.log("Signup error:", error.message);
+    }finally{
+      setIsLoading(false)
     }
     
   }
@@ -105,7 +107,7 @@ const SignUp = ({onOpenChange, setLoginOpen, setVerificationOpen, setEmailforVer
             </div>
             <Input placeholder='' type='password' onChange={(e)=>setSignupInputs({...signupInputs,confirmPassword:e.target.value})}></Input>
 
-            <Button className='w-full mt-5 cursor-pointer bg-emerald-500 hover:bg-emerald-600' type='submit'>Sign Up</Button>
+            <Button className='w-full mt-5 cursor-pointer bg-emerald-500 hover:bg-emerald-600' type='submit' disabled={isLoading} >  {isLoading ? 'Signing up...' : 'Sign Up'}</Button>
           </div>
 
 

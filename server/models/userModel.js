@@ -36,9 +36,6 @@ const userSchema=new mongoose.Schema({
           default: 0
         }
     },
-    file : {
-        type : String,
-    },
     bio:{
         type : String,
         default:"",

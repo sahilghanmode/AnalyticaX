@@ -13,6 +13,7 @@ import { PDFDocument } from 'pdf-lib'
 import { useExcelData } from '@/lib/excel-context'
 import { axiosInstance } from '../../../utils/axios.js'
 import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 const Done = ({ setVisualizationReady, visualizationData }) => {
 
@@ -24,6 +25,7 @@ const Done = ({ setVisualizationReady, visualizationData }) => {
   const [zAxisColumn, setZAxisColumn] = useState('')
   const [availableColumns, setAvailableColumns] = useState([])
   const { data, file } = useExcelData()
+  const navigate=useNavigate()
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -172,7 +174,11 @@ const Done = ({ setVisualizationReady, visualizationData }) => {
               <div className='space-y-6'>
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold">Visualization Results</h2>
-                  <Button variant="outline" size="sm" onClick={() => setVisualizationReady(false)}>
+                  <Button variant="outline" size="sm" onClick={() =>{ 
+                    setVisualizationReady(false)
+     
+                  }
+                  }>
                     Upload New File
                   </Button>
                 </div>

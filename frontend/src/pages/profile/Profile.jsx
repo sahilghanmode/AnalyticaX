@@ -10,8 +10,6 @@ import { axiosInstance } from '../../../utils/axios.js'
 import { useAuth } from '@/lib/auth-context'
 
 
-
-
 const Profile = () => {
     const [activeTab, setActiveTab] = useState("visualizations")
     const { user } = useAuth()

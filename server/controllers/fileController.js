@@ -139,18 +139,16 @@ export const getHistory=async(req,res,next)=>{
 
 export const getVisualizationbyId=async(req,res)=>{
   try {
-    const {id}=req.query
-    if(!id){
+    const {visualizationId}=req.query
+    if(!visualizationId){
       return res.status(400).json({success:false, message:"visualization id required"})
     }
 
-    const visualization=await Visualization.findById(id).populate('file')
+    const visualization=await Visualization.findById(visualizationId).populate('file')
     
     if(!visualization){
       return res.status(400).json({success:false, message:"visualization not found"})
-    }
-    console.log(visualization)
-    
+    }    
 
     const filesUrl=visualization.file.fileUrl
     

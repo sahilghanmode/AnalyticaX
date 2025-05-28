@@ -23,8 +23,8 @@ const Analyze = () => {
   };
 
   useEffect(() => {
-    const id = getQueryParam('id')
-    if (!id || !isAuthenticated) {
+    const visualizationId = getQueryParam('id')
+    if (!visualizationId || !isAuthenticated) {
 
     toast.error("you are not authorized to see this page")
     if (location.search !== '') {
@@ -37,7 +37,7 @@ const Analyze = () => {
       try {
         setIsLoading(true);
         const res = await axiosInstance.get("/file/getVisualizationbyId", {
-          params: { id },
+          params: { visualizationId },
         });
 
         if (res.data.success) {

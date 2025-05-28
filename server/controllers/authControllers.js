@@ -37,7 +37,7 @@ export const verifyOtp = async (req, res) => {
             })
         }
 
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email }).select('-password')
 
         user.incrementOTPAttempts();
 
@@ -66,10 +66,7 @@ export const verifyOtp = async (req, res) => {
         res.status(200).json({
             success: true,
             message: 'Email verified successfully',
-            user: {
-                fullName: user.fullName,
-                email: user.email,
-            }
+            user
         });
 
 
@@ -144,12 +141,11 @@ export const sendOtp = async (req, res) => {
 
 export const signup = async (req, res, next) => {
     try {
-        console.log(req.body)
 
         const { fullName, email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ message: "username and password are required" });
+            return res.status(400).json({ message: "name and password are required" });
         }
         if (!fullName) {
             return res.status(400).json({
@@ -226,6 +222,7 @@ export const login = async (req, res, next) => {
                 id: user.id,
                 fullName: user.fullName,
                 email: user.email,
+                role:user.role,
 
             }
         })

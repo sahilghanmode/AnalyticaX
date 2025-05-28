@@ -6,6 +6,9 @@ import Verification from './pages/auth/Verification'
 import Analyze from './pages/analyze/Analyze'
 import Profile from './pages/profile/Profile'
 import PrivateRoute from './lib/ProtectedRoute'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminDashboard from './pages/admin/Dashboard/AdminDashboard'
+import AdminUsersPanel from './pages/admin/UsersPanel/AdminUsersPanel'
 
 function App() {
 
@@ -19,7 +22,13 @@ function App() {
           <Route path='/verify' element={<Verification />}></Route>
           <Route path='/analyze' element={<Analyze />}> </Route>
 
-          <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>}></Route>
+          <Route path='/profile' element={<PrivateRoute RequiredRole={['user', 'admin']} ><Profile /></PrivateRoute>}></Route>
+
+          <Route path='/admin' element={<AdminLayout/>}>
+            <Route path='dashboard' element={<AdminDashboard/>} ></Route>
+            <Route path='user/:userId' element={<AdminUsersPanel/>}></Route>
+          </Route>
+
 
           <Route path='*' element={<Navigate to='/' replace/>}></Route>
         </Routes>
