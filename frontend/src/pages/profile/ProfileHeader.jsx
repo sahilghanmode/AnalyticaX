@@ -34,7 +34,7 @@ const ProfileHeader = () => {
             </Button>
           </div> */}
 
-          <Button variant="ghost" className="text-red-500 hover:text-red-700 hover:bg-red-50"  onClick={handleLogout}>
+          <Button variant="ghost" className="text-red-500 hover:text-red-700 hover:bg-red-50 cursor-pointer"  onClick={handleLogout}>
             <LogOut className="h-4 w-4 mr-2" />
             Log out
           </Button>

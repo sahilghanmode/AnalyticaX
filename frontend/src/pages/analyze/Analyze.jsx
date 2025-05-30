@@ -24,7 +24,7 @@ const Analyze = () => {
 
   useEffect(() => {
     const visualizationId = getQueryParam('id')
-    if (!visualizationId || !isAuthenticated) {
+    if (visualizationId && !isAuthenticated) {
 
     toast.error("you are not authorized to see this page")
     if (location.search !== '') {

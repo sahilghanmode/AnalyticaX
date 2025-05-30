@@ -4,7 +4,6 @@ import { Navigate } from 'react-router-dom'
 
 const PrivateRoute = ({ children, RequiredRole }) => {
   const { isAuthenticated, user } = useAuth()
-  console.log(user)
   const [checkingAuth, setCheckingAuth] = useState(true)
 
   useEffect(() => {

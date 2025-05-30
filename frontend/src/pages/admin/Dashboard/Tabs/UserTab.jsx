@@ -180,7 +180,7 @@ const UserTab = () => {
                                                     variant="outline"
                                                     size="sm"
                                                     onClick={() => navigate(`/admin/user/${user.id}`)}
-                                                    className="flex items-center gap-1"
+                                                    className="flex items-center gap-1 cursor-pointer"
                                                 >
                                                     <ExternalLink className="h-3 w-3" />
                                                     View Details

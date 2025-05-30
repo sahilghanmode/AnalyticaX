@@ -219,10 +219,15 @@ export const login = async (req, res, next) => {
         console.log("User is logged in")
         return res.status(200).json({
             user: {
-                id: user.id,
+                _id: user._id,
                 fullName: user.fullName,
                 email: user.email,
                 role:user.role,
+                isVerified: user.isVerified,
+                bio: user.bio,
+                createdAt:user.createdAt,
+                updatedAt:user.updatedAt
+
 
             }
         })

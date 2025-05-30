@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button'
 
 const Visualizations = ({visualizationHistory}) => {
   const navigate=useNavigate()
-  console.log(visualizationHistory)
 
   return (
     <div className='space-y-4'>

@@ -1,8 +1,10 @@
 import React from 'react'
+import UserPanelHeader from './UserPanelHeader'
 
 const AdminUsersPanel = () => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
+      <UserPanelHeader/>
       this is adminUserpanel
     </div>
   )

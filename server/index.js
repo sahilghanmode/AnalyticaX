@@ -5,6 +5,7 @@ import cors from 'cors'
 import authRoutes from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import fileRoutes from "./routes/fileRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config()
 
@@ -27,6 +28,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes)
 
 app.use("/api/file", fileRoutes)
+
+app.use("/api/admin",adminRoutes)
 
 app.listen(port, () => console.log(`server is running on port ${port} `))
 

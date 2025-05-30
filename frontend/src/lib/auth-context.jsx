@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
       const res = await axiosInstance.post("/auth/login", { email, password });
 
       const user = res.data.user;
+      console.log(user)
       const message = res.data.message;
 
       setUser(user);

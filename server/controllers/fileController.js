@@ -67,6 +67,7 @@ export const saveVisualization = async (req, res, next) => {
     
     const userId = req.body.userId
     const { chartType, is3d, xAxisKey, yAxisKey, zAxisKey, fileName } = req.body
+    console.log(req.body)
 
 
 
@@ -79,6 +80,7 @@ export const saveVisualization = async (req, res, next) => {
       const jsonData = utils.sheet_to_json(worksheet)
       const awsUpload = await uploadParsedJsonToS3(jsonData, fileName)
 
+      console.log(file)
       file = await File.create({
         fileName,
         fileUrl: awsUpload.url,
@@ -123,6 +125,7 @@ export const saveVisualization = async (req, res, next) => {
 export const getHistory=async(req,res,next)=>{
   try {
     const userId=req.query.userId
+    console.log(userId)
     const visualizations=await Visualization.find().populate({
       path:'file',
       match:{uploadedBy:userId}
