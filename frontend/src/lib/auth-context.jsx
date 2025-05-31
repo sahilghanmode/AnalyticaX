@@ -40,7 +40,6 @@ export function AuthProvider({ children }) {
       const res = await axiosInstance.post("/auth/login", { email, password, loginFor30Days });
 
       const user = res.data.user;
-      console.log(user)
       if(!loginFor30Days){
         sessionStorage.setItem("authToken",JSON.stringify(user))
       }

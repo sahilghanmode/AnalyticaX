@@ -5,11 +5,14 @@ import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/auth-context'
 import { LogOut } from 'lucide-react'
 import DashboardMain from './DashboardMain'
+import { useAdminData } from '@/lib/admin-context'
 
 const AdminDashboard = () => {
-
+    const {allUsers}=useAdminData()
     const {user, logout}=useAuth()
     const navigate=useNavigate()
+
+    console.log(allUsers)
 
   return (
     <div className="min-h-screen flex flex-col">

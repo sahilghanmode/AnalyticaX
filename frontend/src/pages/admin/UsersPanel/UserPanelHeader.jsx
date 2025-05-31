@@ -2,11 +2,14 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { 
-    ArrowLeft 
+    ArrowLeft,
+    LogOut 
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { useAuth } from '@/lib/auth-context'
 
 const UserPanelHeader = () => {
+    const {user}=useAuth()
     const navigate=useNavigate()
 
     const handleLogout=()=>{
@@ -50,7 +53,7 @@ const UserPanelHeader = () => {
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="text-sm text-gray-600">
-                        Admin: <span className="font-medium">{currentUser?.name || currentUser?.email}</span>
+                        Admin: <span className="font-medium">{user?.fullName || user?.email}</span>
                     </div>
                     <Button
                         variant="ghost"
