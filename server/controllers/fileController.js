@@ -80,7 +80,6 @@ export const saveVisualization = async (req, res, next) => {
       const jsonData = utils.sheet_to_json(worksheet)
       const awsUpload = await uploadParsedJsonToS3(jsonData, fileName)
 
-      console.log(file)
       file = await File.create({
         fileName,
         fileUrl: awsUpload.url,
@@ -99,6 +98,7 @@ export const saveVisualization = async (req, res, next) => {
       yAxisKey,
       zAxisKey,
     })
+    console.log(visualization)
   
     if (!visualization) {
       visualization = await Visualization.create({

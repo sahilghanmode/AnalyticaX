@@ -1,19 +1,20 @@
 import Plot from 'react-plotly.js';
 import { useExcelData } from '@/lib/excel-context';
 
-export const ThreeDGraph = () => {
+export const ThreeDGraph = ({xAxisColumn, yAxisColumn, zAxisColumn}) => {
     const {data}=useExcelData()
   if (!data || data.length === 0) return <p>No data available</p>;
-
   const numericKeys = Object.keys(data[0]).filter(key => typeof data[0][key] === 'number');
   if (numericKeys.length < 3) return <p>Need at least 3 numeric columns for 3D plot</p>;
 
-  const [xKey, yKey, zKey] = numericKeys;
 
-  const x = data.map(row => row[xKey]);
-  const y = data.map(row => row[yKey]);
-  const z = data.map(row => row[zKey]);
-  const text = data.map(row => row.student); 
+  const x = data.map(row => row[xAxisColumn]);
+  const y = data.map(row => row[yAxisColumn]);
+  const z = data.map(row => row[zAxisColumn]);
+  const text = data.map(row => 
+  `${xAxisColumn}: ${row[xAxisColumn]}, ${yAxisColumn}: ${row[yAxisColumn]}, ${zAxisColumn}: ${row[zAxisColumn]}`
+);
+
 
   const colorArray = data.map((_, i) => i);
 
@@ -39,14 +40,14 @@ export const ThreeDGraph = () => {
           },
         ]}
         layout={{
-          title: `3D Scatter Plot: ${xKey} vs ${yKey} vs ${zKey}`,
+          title: `3D Scatter Plot: ${xAxisColumn} vs ${yAxisColumn} vs ${zAxisColumn}`,
           autosize: true,
           width:undefined,
           height: 500,
           scene: {
-            xaxis: { title: xKey },
-            yaxis: { title: yKey },
-            zaxis: { title: zKey },
+            xaxis: { title: { text: xAxisColumn } },
+            yaxis: { title: { text: yAxisColumn } },
+            zaxis: { title: { text: zAxisColumn } },
           },
         }}
         style={{width:'100%', height:'100%'}}

@@ -25,7 +25,6 @@ const Done = ({ setVisualizationReady, visualizationData }) => {
   const [zAxisColumn, setZAxisColumn] = useState('')
   const [availableColumns, setAvailableColumns] = useState([])
   const { data, file } = useExcelData()
-  const navigate=useNavigate()
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -33,11 +32,11 @@ const Done = ({ setVisualizationReady, visualizationData }) => {
       if (columns.length >= 2) {
         setAvailableColumns(columns);
         setXAxisColumn((prev) => prev || columns[0]);
-        setYAxisColumn((prev) => prev.length > 0 ? prev : [columns[1]])
+        setYAxisColumn((prev) => prev.length > 0 ? prev : columns[1])
         
       }
       if(columns.length>=3){
-        setZAxisColumn((prev)=>prev.length>0 ? prev: [columns[2]])
+        setZAxisColumn((prev)=>prev.length>0 ? prev: columns[2])
       }
     }
   }, [data])
@@ -107,16 +106,23 @@ const Done = ({ setVisualizationReady, visualizationData }) => {
     if (axis === "x") {
       setXAxisColumn(column);
 
-    } else {
-      setYAxisColumn(column);
+    } if(axis==="y"){
+      setYAxisColumn(column)
+    }
+     else {
+      setZAxisColumn(column);
 
     }
+   
   }
-
 
   const handleSaveVisualization = async () => {
     try {
+    
       const is3d = (viewMode === "3d")
+      if(is3d){
+        setChartType("3d")
+      }
       let fileName;
       if(visualizationData){
         fileName=visualizationData.file.fileName
@@ -137,9 +143,9 @@ const Done = ({ setVisualizationReady, visualizationData }) => {
       }else{
         zAxisKey=zAxisColumn
       }
+      console.log(chartType)
 
       const userId = user._id
-      console.log(userId)
       const body = {
         chartType,
         is3d,
@@ -303,7 +309,7 @@ const Done = ({ setVisualizationReady, visualizationData }) => {
 
                   <TabsContent value="3d" className="mt-0">
                     <div className='border rounded-lg w-full p-4 bg-gray-50 flex items-center justify-center min-h-[500px]'>
-                      <ThreeDGraph />
+                      <ThreeDGraph xAxisColumn={xAxisColumn} yAxisColumn={yAxisColumn} zAxisColumn={zAxisColumn} />
                     </div>
                   </TabsContent>
                 </Tabs>

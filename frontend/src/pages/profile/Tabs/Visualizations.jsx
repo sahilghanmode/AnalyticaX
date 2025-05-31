@@ -50,6 +50,14 @@ const Visualizations = ({visualizationHistory}) => {
                       <span className='ml-1'>
                         { viz.yAxisKey}
                       </span>
+                      {viz.is3d && (
+                        <div>
+                          Z-axis :
+                          <span className='ml-1'>
+                            {viz.zAxisKey}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                   {/* {viz.project && (

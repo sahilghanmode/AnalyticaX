@@ -11,11 +11,21 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const getCurrentUser = async function () {
       try {
-        const { data } = await axiosInstance.get('/auth/getCurrentUser', { withCredentials: true, });
-        if (data) {
-          setUser(data);
-          setIsAuthenticated(true);
+        const storedUser= sessionStorage.getItem("authToken")
+        if(!storedUser){
+          const { data } = await axiosInstance.get('/auth/getCurrentUser', { withCredentials: true, });
+          if (data) {
+            setUser(data);
+            setIsAuthenticated(true);
+          }
+          
         }
+
+        if (storedUser) {
+          const parsedUser=JSON.parse(storedUser)
+            setUser(parsedUser);
+            setIsAuthenticated(true);
+          }
 
       } catch (error) {
         console.log(error);
@@ -25,12 +35,15 @@ export function AuthProvider({ children }) {
     getCurrentUser()
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, password,loginFor30Days) => {
     try {
-      const res = await axiosInstance.post("/auth/login", { email, password });
+      const res = await axiosInstance.post("/auth/login", { email, password, loginFor30Days });
 
       const user = res.data.user;
       console.log(user)
+      if(!loginFor30Days){
+        sessionStorage.setItem("authToken",JSON.stringify(user))
+      }
       const message = res.data.message;
 
       setUser(user);

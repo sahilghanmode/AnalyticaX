@@ -6,7 +6,8 @@ import { useAuth } from '@/lib/auth-context'
 const Login = ({onOpenChange, setSignupOpen}) => {
   const [loginInputs,setLoginInputs]=useState({
     email:"",
-    password:""
+    password:"",
+    loginFor30Days:false,
   })
   const {login}=useAuth()
 
@@ -27,7 +28,7 @@ const Login = ({onOpenChange, setSignupOpen}) => {
     }
 
     try {
-      await login(loginInputs.email,loginInputs.password)
+      await login(loginInputs.email,loginInputs.password,loginInputs.loginFor30Days)
       onOpenChange()
     } catch (error) {
       console.log(error.message)
@@ -62,7 +63,16 @@ const Login = ({onOpenChange, setSignupOpen}) => {
               <div className='font-medium '>Enter your password</div>
               <Input placeholder='' type="password" onChange={(e)=>setLoginInputs({...loginInputs,password:e.target.value})} />
 
-              <Button className='w-full mt-5 cursor-pointer bg-emerald-500 hover:bg-emerald-600' type="submit">Log In</Button>
+              <div className='flex items-center space-x-2 mt-3'>
+                <Input type="checkbox" className="w-4 h-4 cursor-pointer" onChange={()=>setLoginInputs({...loginInputs,loginFor30Days:true})} />
+
+                <label htmlFor="enable3D" className="cursor-pointer">
+                  Remember me for 30 days
+                </label>
+
+              </div>
+
+              <Button className='w-full mt-2 cursor-pointer bg-emerald-500 hover:bg-emerald-600' type="submit">Log In</Button>
             </div>
 
 

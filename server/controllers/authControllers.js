@@ -187,6 +187,7 @@ export const signup = async (req, res, next) => {
 export const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
+        const {loginFor30Days}=req.body
 
         if (!email || !password) {
             return res.status(400).json({
@@ -210,12 +211,16 @@ export const login = async (req, res, next) => {
         if (!auth) {
             return res.status(400).json({ message: "Password does not match" })
         }
-        res.cookie("authToken", createToken(email, user.id), {
-            maxAge,
-            secure: true,
-            sameSite: "None",
-            httpOnly: true
-        })
+        console.log(loginFor30Days)
+        
+        if(loginFor30Days){
+            res.cookie("authToken", createToken(email, user.id), {
+                maxAge,
+                secure: true,
+                sameSite: "None",
+                httpOnly: true
+            })
+        }
         console.log("User is logged in")
         return res.status(200).json({
             user: {
