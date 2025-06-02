@@ -12,7 +12,6 @@ const AdminDashboard = () => {
     const {user, logout}=useAuth()
     const navigate=useNavigate()
 
-    console.log(allUsers)
 
   return (
     <div className="min-h-screen flex flex-col">

@@ -49,6 +49,10 @@ const userSchema=new mongoose.Schema({
     role:{
         type:String,
         default:"user"
+    },
+    suspended:{
+        type:Boolean,
+        default:false
     }
 },{
     timestamps:true

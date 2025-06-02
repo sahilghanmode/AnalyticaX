@@ -4,7 +4,7 @@ import { compare } from "bcrypt"
 import nodemailer from "nodemailer";
 
 
-const maxAge = 3 * 24 * 60 * 60 * 1000;
+const maxAge = 30 * 24 * 60 * 60 * 1000;
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -211,7 +211,6 @@ export const login = async (req, res, next) => {
         if (!auth) {
             return res.status(400).json({ message: "Password does not match" })
         }
-        console.log(loginFor30Days)
         
         if(loginFor30Days){
             res.cookie("authToken", createToken(email, user.id), {
@@ -232,8 +231,6 @@ export const login = async (req, res, next) => {
                 bio: user.bio,
                 createdAt:user.createdAt,
                 updatedAt:user.updatedAt
-
-
             }
         })
 

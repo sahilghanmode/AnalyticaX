@@ -25,9 +25,8 @@ export const AdminDataProvider = ({ children }) => {
         return res.data.user
       }
       
-      
     } catch (error) {
-      
+      console.log("error from getCurrentUserforID",{error})
     }
   }
 

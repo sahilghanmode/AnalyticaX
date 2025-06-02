@@ -17,6 +17,10 @@ const fileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', required: true
     },
+    isArchived:{
+        type:Boolean,
+        default:false,
+    }
 });
 
 const File=mongoose.model('File',fileSchema)
