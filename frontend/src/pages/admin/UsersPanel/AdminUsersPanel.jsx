@@ -5,14 +5,15 @@ import FilesAndProjects from './FilesAndProjects'
 import { useAdminData } from '@/lib/admin-context'
 import UserProfileHeader from './UserProfileHeader'
 import StatisticsCards from './StatisticsCards'
+import { axiosInstance } from '../../../../utils/axios.js'
 
 const AdminUsersPanel = () => {
   const {getCurrentUserforId}=useAdminData()
   const {userId}=useParams()
   const [user,setUser]=useState(null)
+  const [files,setFiles]=useState([])
 
   useEffect(() => {
-    console.log("it is here")
     const fetchUser = async () => {
       if (userId) {
         const result= await getCurrentUserforId(userId)
@@ -22,17 +23,38 @@ const AdminUsersPanel = () => {
       }
     }
     fetchUser()
-  }, [userId,getCurrentUserforId ])
-  console.log(user)
+  }, [userId,getCurrentUserforId, ])
+
+  useEffect(()=>{
+    const fetchFiles=async()=>{
+      if(userId){
+        try {
+          const result=await axiosInstance.get(`/admin/getFilesForUser/${userId}`)
+          console.log(result.data)
+          if(result.data.success){
+            setFiles(result.data.files)
+          }
+          
+        } catch (error) {
+          console.log("something went wrong",{error})
+          return 
+        }
+        
+      }
+    }
+
+    fetchFiles()
+  },[userId,])
+
 
   return (
     <div className="min-h-screen flex flex-col">
       <UserPanelHeader/>
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
-            <UserProfileHeader user={user} /> 
-            <StatisticsCards/>
-            <FilesAndProjects userId={userId} />
+            <UserProfileHeader user={user} setUser={setUser} /> 
+            <StatisticsCards files={files} />
+            <FilesAndProjects files={files} setFiles={setFiles} />
         </div>
       </main>
     </div>

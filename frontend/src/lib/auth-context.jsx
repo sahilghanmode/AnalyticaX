@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
     getCurrentUser()
   }, []);
 
-  const login = async (email, password,loginFor30Days) => {
+  const login = async (email, password,loginFor30Days, navigate) => {
     try {
       const res = await axiosInstance.post("/auth/login", { email, password, loginFor30Days });
 
@@ -48,7 +48,12 @@ export function AuthProvider({ children }) {
       setUser(user);
       setIsAuthenticated(true);
 
-      toast.error(message || "Logged in successfully");
+      toast.error(message || "Logged in successfully")
+      if(navigate){
+        if(user.role=="admin"){
+          navigate("/admin/dashboard")
+        }
+      }
     } catch (error) {
       const message =
         error.response?.data?.message || error.response?.data?.error || "Login failed";

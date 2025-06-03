@@ -3,23 +3,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import FilesList from './filesTab/FilesList'
 import { axiosInstance } from '../../../../utils/axios.js'
 
-const FilesAndProjects = ({userId}) => {
-    const [files, setFiles] = useState([])
+const FilesAndProjects = ({files,setFiles}) => {
 
-    useEffect(() => {
-    const getFiles = async () => {
-      try {
-        const response = await axiosInstance.get(`/admin/getFilesForUser/${userId}`)
-        console.log("Fetched files:", response.data.files)
-        setFiles(response.data.files)
-      } catch (error) {
-        console.error("Error fetching files:", error)
-      }
-    }
-
-    getFiles()
-        
-    }, [userId])
 
     const handleFileAction = (file, action) => {
     // setSelectedFile(file)
@@ -28,7 +13,6 @@ const FilesAndProjects = ({userId}) => {
     console.log("this is fileaction")
   }
 
-  console.log("Files in state:", files)
 
     return (
         <div>
@@ -45,7 +29,7 @@ const FilesAndProjects = ({userId}) => {
                         </TabsList>
 
                         <TabsContent value="active">
-                            <FilesList files={files} onFileAction={handleFileAction} />
+                            <FilesList files={files} setFiles={setFiles} onFileAction={handleFileAction} />
                         </TabsContent>
 
                     

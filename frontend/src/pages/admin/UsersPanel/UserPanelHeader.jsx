@@ -9,11 +9,12 @@ import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/lib/auth-context'
 
 const UserPanelHeader = () => {
-    const {user}=useAuth()
+    const {user,logout}=useAuth()
     const navigate=useNavigate()
 
     const handleLogout=()=>{
-        console.log("this is handlelogout")
+        logout()
+        navigate("/")
     }
 
     return (

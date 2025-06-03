@@ -10,8 +10,9 @@ import {
   RotateCcw
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { axiosInstance } from '../../../../../utils/axios.js'
 
-const FilesList = ({files}) => {
+const FilesList = ({files, setFiles}) => {
 
 
   const formatFileSize = (bytes) => {
@@ -33,6 +34,63 @@ const FilesList = ({files}) => {
       hour12: true
     });
   }
+
+  const archiveFile =async (file) => {
+    try {
+      const res=await axiosInstance.patch(`/admin/archivefile/${file._id}`)    
+      if(res.data.success){
+        setFiles((prevFiles) =>
+          prevFiles.map((f) =>
+            f._id === file._id ? { ...f, isArchived: true } : f
+          )
+        )
+      }  
+    } catch (error) {
+      console.log("error from archivefile",{error})
+    }
+  };
+
+  const deleteFile = async(file) => {
+    try {
+      const res=await axiosInstance.delete(`/admin/deletefile/${file._id}`)
+      if(res.data.success){
+        setFiles((prevFiles) => prevFiles.filter((f) => f._id !== file._id));
+      }
+    } catch (error) {
+      console.log("error from deleteFile",{error})
+    }
+  };
+
+  const unarchiveFile = async(file) => {
+    try {
+      const res=await axiosInstance.patch(`/admin/unarchivefile/${file._id}`)
+      if (res.data.success) {
+      setFiles((prevFiles) =>
+        prevFiles.map((f) =>
+          f._id === file._id ? { ...f, isArchived: false } : f
+        )
+      );
+    }
+    } catch (error) {
+      console.log("error from unarchivefile",{error})
+    }
+  }
+
+  const onFileAction = (file, action) => {
+    switch (action) {
+      case "archive":
+        archiveFile(file);
+        break;
+      case "delete":
+        deleteFile(file);
+        break;
+      case "unarchive":
+        unarchiveFile(file);
+        break;
+      default:
+        console.warn("Unknown action:", action);
+    }
+  };
 
   return (
     <div className="space-y-3">
@@ -58,9 +116,9 @@ const FilesList = ({files}) => {
               <div className="flex items-center gap-2">
                 {file.isArchived && <Badge variant="secondary" >Archived</Badge>}
                 {!file.isArchived && <Badge variant="default">Active</Badge> }
-                <DropdownMenu>
+                <DropdownMenu >
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
+                    <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer ">
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -69,11 +127,11 @@ const FilesList = ({files}) => {
                     <DropdownMenuSeparator />
                     {file.isArchived == false && (
                       <>
-                        <DropdownMenuItem onClick={() => onFileAction(file, "archive")}>
-                          <Archive className="mr-2 h-4 w-4" />
+                        <DropdownMenuItem onClick={() => onFileAction(file, "archive")} className="cursor-pointer" >
+                          <Archive className="mr-2 h-4 w-4 cursor-pointer" />
                           Archive
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => onFileAction(file, "delete")} className="text-red-600">
+                        <DropdownMenuItem onClick={() => onFileAction(file, "delete")} className="text-red-600 cursor-pointer ">
                           <Trash2 className="mr-2 h-4 w-4" />
                           Delete
                         </DropdownMenuItem>
@@ -81,12 +139,12 @@ const FilesList = ({files}) => {
                     )}
                     {file.isArchived == true && (
                       <>
-                        <DropdownMenuItem onClick={() => onFileAction(file, "unarchive")}>
-                          <RotateCcw className="mr-2 h-4 w-4" />
+                        <DropdownMenuItem onClick={() => onFileAction(file, "unarchive")} className="cursor-pointer" >
+                          <RotateCcw className="mr-2 h-4 w-4 " />
                           Unarchive
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => onFileAction(file, "delete")} className="text-red-600">
-                          <Trash2 className="mr-2 h-4 w-4" />
+                        <DropdownMenuItem onClick={() => onFileAction(file, "delete")} className="text-red-600 cursor-pointer ">
+                          <Trash2 className="mr-2 h-4 w-4 " />
                           Delete Permanently
                         </DropdownMenuItem>
                       </>

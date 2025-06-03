@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/auth-context'
+import { useNavigate } from 'react-router-dom'
 
 const Login = ({onOpenChange, setSignupOpen}) => {
   const [loginInputs,setLoginInputs]=useState({
@@ -9,6 +10,8 @@ const Login = ({onOpenChange, setSignupOpen}) => {
     password:"",
     loginFor30Days:false,
   })
+
+  const navigate=useNavigate()
   const {login}=useAuth()
 
   function handleSignUpClick(){
@@ -28,7 +31,7 @@ const Login = ({onOpenChange, setSignupOpen}) => {
     }
 
     try {
-      await login(loginInputs.email,loginInputs.password,loginInputs.loginFor30Days)
+      await login(loginInputs.email,loginInputs.password,loginInputs.loginFor30Days,navigate)
       onOpenChange()
     } catch (error) {
       console.log(error.message)

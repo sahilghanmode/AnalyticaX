@@ -11,9 +11,9 @@ import {
     Phone,
     Globe
 } from 'lucide-react'
+import DropDownActions from './DropDownActions'
 
-const UserProfileHeader = ({user}) => {
-    console.log(user)
+const UserProfileHeader = ({user,setUser}) => {
     if(!user){
         return (
             <div>
@@ -41,6 +41,15 @@ const UserProfileHeader = ({user}) => {
             default:
             return "outline";
         }
+    }
+
+    function formatTimestamp(isoString) {
+        const date = new Date(isoString);
+        return date.toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
     }
 
     const getRoleIcon = (role) => {
@@ -108,7 +117,7 @@ const UserProfileHeader = ({user}) => {
                                 <div className="space-y-2 text-sm">
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4 text-gray-400" />
-                                        <span>Joined: {user.createdAt}</span>
+                                        <span>Joined: {formatTimestamp(user.createdAt)}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Calendar className="h-4 w-4 text-gray-400" />
@@ -117,7 +126,8 @@ const UserProfileHeader = ({user}) => {
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <DropDownActions user={user} setUser={setUser}/>
                         {/* <div className="flex flex-col gap-2">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>

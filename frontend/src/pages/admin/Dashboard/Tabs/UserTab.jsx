@@ -66,6 +66,22 @@ const UserTab = () => {
         }
     }
 
+    const formatDateTime = (dateInput) => {
+        const date = new Date(dateInput);
+
+        if (isNaN(date.getTime())) return 'Invalid Date';
+
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',  // e.g., Jan, Feb
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true     // for AM/PM format
+        });
+    };
+
+
     return (
         <div>
             <Card>
@@ -82,7 +98,7 @@ const UserTab = () => {
                                     <th className="text-left py-3 px-4 font-medium">Role</th>
                                     <th className="text-left py-3 px-4 font-medium">Status</th>
                                     <th className="text-left py-3 px-4 font-medium">Created</th>
-                                    <th className="text-left py-3 px-4 font-medium">Last Login</th>
+                                    <th className="text-left py-3 px-4 font-medium">Last Updated</th>
                                     <th className="text-right py-3 px-4 font-medium">Details</th>
                                 </tr>
                             </thead>
@@ -116,8 +132,8 @@ const UserTab = () => {
                                             </Badge>
                                         </td>
 
-                                        <td className="py-3 px-4 text-sm text-gray-500">{user.createdAt}</td>
-                                        <td className="py-3 px-4 text-sm text-gray-500">{user.updatedAt}</td>
+                                        <td className="py-3 px-4 text-sm text-gray-500">{formatDateTime(user.createdAt)}</td>
+                                        <td className="py-3 px-4 text-sm text-gray-500">{formatDateTime(user.updatedAt)}</td>
 
                                         <td className="py-3 px-4 text-right">
                                             <div className="flex items-center gap-2 justify-end">

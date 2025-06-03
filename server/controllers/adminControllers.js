@@ -1,5 +1,6 @@
 import User from "../models/userModel.js"
 import File from "../models/fileModel.js"
+import Visualization from "../models/visualizationModel.js"
 
 export const getAllUsers=async(req,res,next)=>{
     try {
@@ -79,5 +80,106 @@ export const deleteUser=async(req,res)=>{
 }
 
 export const deleteFile=async(req,res,next)=>{
-    console.log("this is deletfile")
+    try {
+        const fileId=req.params.fileId
+        if(!fileId){
+            return res.status(400).json({success:false, message:"fileId is required"}
+            )
+        }
+
+        const deletedFile=await File.findByIdAndDelete(fileId)
+
+        const deletedVisualizations = await Visualization.deleteMany({ file: fileId })
+
+        if(!deleteFile){
+            return res.status(404).json({success:false, message:"file not found"})
+        }
+
+        return res.status(200).json({success:true, message:"file deleted successfully"})
+        
+    } catch (error) {
+        console.log("error from deleteFile",{error})
+        return res.status(500).json({success:false, message:"something went wrong"})
+    }
+}
+
+export const archiveFile=async(req,res,next)=>{
+    try {
+        const fileId=req.params.fileId
+        if(!fileId){
+            return res.status(400).json({success:false,message:"fileId is required"})
+        }
+
+        const updatedFile = await File.findByIdAndUpdate(
+            fileId,
+            { isArchived: true },
+            { new: true }
+        );
+
+        if (!updatedFile) {
+            return res.status(404).json({ success: false, message: "File not found." });
+        }
+        return res.status(200).json({ success: true, message: "File archived successfully.", file: updatedFile });
+    } catch (error) {
+        console.error("Error archiving file:", error);
+        return res.status(500).json({ success: false, message: "Internal server error." });
+    }
+}
+
+export const unarchiveFile = async (req, res, next) => {
+  try {
+    const fileId = req.params.fileId;
+
+    const updatedFile = await File.findByIdAndUpdate(
+      fileId,
+      { isArchived: false },
+      { new: true }
+    );
+
+    if (!updatedFile) {
+      return res.status(404).json({ success: false, message: "File not found." });
+    }
+
+    return res.status(200).json({ success: true, message: "File unarchived successfully.", file: updatedFile });
+  } catch (error) {
+    console.error("Error unarchiving file:", error);
+    return res.status(500).json({ success: false, message: "Internal server error." });
+  }
+}
+
+export const suspendUser=async(req,res,next)=>{
+    try {
+        const { userId } = req.params;
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { suspended: true },
+            { new: true }
+        );
+
+        if (!updatedUser) return res.status(404).json({ success: false, message: 'User not found' });
+
+        return res.status(200).json({ success: true, message: 'User suspended', user: updatedUser });
+        
+    } catch (error) {
+        console.log("error from suspendUser controleer",{error})
+        return res.status(500).json({success:false, message:"Internal server error"})
+    }
+}
+
+export const reactiveUser=async(req,res,next)=>{
+    try {
+        const { userId } = req.params;
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { suspended: false },
+            { new: true }
+        );
+
+        if (!updatedUser) return res.status(404).json({ success: false, message: 'User not found' });
+
+        return res.status(200).json({ success: true, message: 'User reactivated', user: updatedUser });
+  } catch (error) {
+        console.error('Error reactivating user:', error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
 }
