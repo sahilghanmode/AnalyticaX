@@ -25,7 +25,9 @@ const Visualizations = ({visualizationHistory}) => {
       </div>
 
       {visualizationHistory.length > 0 ? (
-        visualizationHistory.map((viz) => (
+        visualizationHistory
+        .filter((viz) => !viz.file.isArchived) 
+        .map((viz) => (
           <Card key={viz._id} className="hover:shadow-md transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">

@@ -64,7 +64,7 @@ const Overview = () => {
                     </CardContent>
                 </Card>
 
-                <Card>
+                {/* <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Moderators</CardTitle>
                         <Shield className="h-4 w-4 text-blue-600" />
@@ -73,7 +73,7 @@ const Overview = () => {
                         <div className="text-2xl font-bold">1</div>
                         <p className="text-xs text-muted-foreground">Staff members</p>
                     </CardContent>
-                </Card>
+                </Card> */}
 
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

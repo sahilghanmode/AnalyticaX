@@ -43,17 +43,22 @@ export function AuthProvider({ children }) {
       if(!loginFor30Days){
         sessionStorage.setItem("authToken",JSON.stringify(user))
       }
-      const message = res.data.message;
+      if(user.suspended){
+        toast.error("User is suspended")
+      }else{
+        const message = res.data.message;
 
-      setUser(user);
-      setIsAuthenticated(true);
+        setUser(user);
+        setIsAuthenticated(true);
 
-      toast.error(message || "Logged in successfully")
-      if(navigate){
-        if(user.role=="admin"){
-          navigate("/admin/dashboard")
+        toast.error(message || "Logged in successfully")
+        if(navigate){
+          if(user.role=="admin"){
+            navigate("/admin/dashboard")
+          }
         }
       }
+      
     } catch (error) {
       const message =
         error.response?.data?.message || error.response?.data?.error || "Login failed";
