@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import FilesList from './filesTab/FilesList'
 import { axiosInstance } from '../../../../utils/axios.js'
 
-const FilesAndProjects = ({files,setFiles}) => {
+const FilesAndProjects = ({files,setFiles,projects, setAllProjects}) => {
 
 
     const handleFileAction = (file, action) => {
@@ -19,6 +19,8 @@ const FilesAndProjects = ({files,setFiles}) => {
             <Tabs defaultValue="files" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="files">Files ({files.length})</TabsTrigger>
+
+                    <TabsTrigger value="projects">Projects ({projects.length})</TabsTrigger>
                     
                 </TabsList>
 

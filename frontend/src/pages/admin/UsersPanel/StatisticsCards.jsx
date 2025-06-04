@@ -2,14 +2,21 @@ import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { FileSpreadsheet, FolderOpen, HardDrive, BarChart3} from 'lucide-react'
 
-const StatisticsCards = ({files}) => {
+const StatisticsCards = ({files,projects}) => {
 
-    const formatFileSize = (bytes) => {
-        if (bytes === 0) return "0 Bytes"
-        const k = 1024
-        const sizes = ["Bytes", "KB", "MB", "GB"]
-        const i = Math.floor(Math.log(bytes) / Math.log(k))
-        return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+    // const formatFileSize = (bytes) => {
+    //     if (bytes === 0) return "0 Bytes"
+    //     const k = 1024
+    //     const sizes = ["Bytes", "KB", "MB", "GB"]
+    //     const i = Math.floor(Math.log(bytes) / Math.log(k))
+    //     return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+    // }
+
+    let activeFiles=0;
+    for(const file of files){
+        if(!file.isArchived){
+            activeFiles+=1;
+        }
     }
 
   return (
@@ -31,14 +38,14 @@ const StatisticsCards = ({files}) => {
                 <div className="flex items-center justify-between">
                 <div>
                     <p className="text-sm font-medium text-gray-600">Projects</p>
-                    <p className="text-2xl font-bold">2</p>
+                    <p className="text-2xl font-bold">{projects.length}</p>
                 </div>
                 <FolderOpen className="h-8 w-8 text-green-600" />
                 </div>
             </CardContent>
             </Card>
 
-            <Card>
+            {/* <Card>
             <CardContent className="pt-4">
                 <div className="flex items-center justify-between">
                 <div>
@@ -48,14 +55,14 @@ const StatisticsCards = ({files}) => {
                 <HardDrive className="h-8 w-8 text-purple-600" />
                 </div>
             </CardContent>
-            </Card>
+            </Card> */}
 
             <Card>
             <CardContent className="pt-4">
                 <div className="flex items-center justify-between">
                 <div>
                     <p className="text-sm font-medium text-gray-600">Active Files</p>
-                    <p className="text-2xl font-bold">2</p>
+                    <p className="text-2xl font-bold">{activeFiles}</p>
                 </div>
                 <BarChart3 className="h-8 w-8 text-emerald-600" />
                 </div>

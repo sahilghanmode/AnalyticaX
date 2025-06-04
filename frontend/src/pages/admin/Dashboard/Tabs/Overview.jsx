@@ -9,8 +9,23 @@ import {
     TrendingUp,
     Activity
 } from 'lucide-react'
+import { useAdminData } from '@/lib/admin-context'
 
 const Overview = () => {
+    const {allUsers}=useAdminData()
+
+    let suspended=0;
+    let admins=0;
+
+    for(const user of allUsers){
+        if(user.suspended){
+            suspended+=1;
+        }
+        if(user.role=="admin"){
+            admins+=1;
+        }
+    }
+
     return (
         <div className='space-y-6'>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -20,7 +35,7 @@ const Overview = () => {
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">5</div>
+                        <div className="text-2xl font-bold">{allUsers.length}</div>
                         <p className="text-xs text-muted-foreground">+2 from last month</p>
                     </CardContent>
                 </Card>
@@ -44,7 +59,7 @@ const Overview = () => {
                         <UserX className="h-4 w-4 text-red-600" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">1</div>
+                        <div className="text-2xl font-bold">{suspended}</div>
                         <p className="text-xs text-muted-foreground">Requires attention</p>
                     </CardContent>
                 </Card>
@@ -66,7 +81,7 @@ const Overview = () => {
                         <Crown className="h-4 w-4 text-purple-600" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">2</div>
+                        <div className="text-2xl font-bold">{admins}</div>
                         <p className="text-xs text-muted-foreground">Full access</p>
                     </CardContent>
                 </Card>

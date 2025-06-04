@@ -42,6 +42,7 @@ const Projects = () => {
     const handleNewProject=()=>{
       setNewProjectOpen(true)
     }
+ 
 
   return (
     <div className='space-y-6'>
@@ -56,10 +57,10 @@ const Projects = () => {
               {projectsData.length > 0 ? (
                 <div className="space-y-4">
                   {projectsData.map((project) => (
-                    <Card key={project.id} className="overflow-hidden">
+                    <Card key={project._id} className="overflow-hidden">
                       <Collapsible
-                        open={openProjectId === project.id}
-                        onOpenChange={() => setOpenProjectId(openProjectId === project.id ? null : project.id)}
+                        open={openProjectId === project._id}
+                        onOpenChange={() => setOpenProjectId(openProjectId == project._id ? null : project._id)}
                       >
                         <div className="flex items-center p-6">
                           <div className="h-12 w-12 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0 mr-4">
@@ -70,7 +71,7 @@ const Projects = () => {
                               <h3 className="font-medium text-lg">{project.name}</h3>
                               <CollapsibleTrigger asChild>
                                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  {openProjectId === project.id ? (
+                                  {openProjectId === project._id ? (
                                     <ChevronDown className="h-4 w-4" />
                                   ) : (
                                     <ChevronRight className="h-4 w-4" />
@@ -100,7 +101,7 @@ const Projects = () => {
                                 size="sm"
                                 variant="outline"
                                 className="text-emerald-600 border-emerald-200 hover:bg-emerald-50"
-                                onClick={() => handleAddFile(project.id)}
+                                onClick={() => handleAddFile(project._id)}
                               >
                                 <FileUp className="h-3.5 w-3.5 mr-1.5" />
                                 Add File
@@ -108,9 +109,9 @@ const Projects = () => {
                             </div>
 
                             <div className="space-y-3">
-                              {project.visualizations.map((viz) => (
+                              {project.files.map((viz) => (
                                 <div
-                                  key={viz.id}
+                                  key={viz._id}
                                   className="flex items-center p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors"
                                 >
                                   <div className="h-8 w-8 rounded-md bg-white border flex items-center justify-center flex-shrink-0 mr-3">
@@ -118,7 +119,7 @@ const Projects = () => {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center justify-between">
-                                      <h5 className="font-medium text-sm truncate">{viz.name}</h5>
+                                      <h5 className="font-medium text-sm truncate">{viz.fileName}</h5>
                                       <Badge variant="outline" className="ml-2 text-xs">
                                         {viz.type}
                                       </Badge>

@@ -12,6 +12,7 @@ const AdminUsersPanel = () => {
   const {userId}=useParams()
   const [user,setUser]=useState(null)
   const [files,setFiles]=useState([])
+  const [projects,setAllProjects]=useState([])
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,6 +25,20 @@ const AdminUsersPanel = () => {
     }
     fetchUser()
   }, [userId,getCurrentUserforId, ])
+
+  useEffect(()=>{
+    const getProjects=async()=>{
+      try {
+        const res=await axiosInstance.get(`/admin/getprojects/${userId}`)
+        if(res.data.success){
+          setAllProjects(res.data.data)
+        }
+      } catch (error) {
+        console.log("error from admindata provider",{error})
+      }
+    }
+    getProjects()
+  },[])
 
   useEffect(()=>{
     const fetchFiles=async()=>{
@@ -53,8 +68,8 @@ const AdminUsersPanel = () => {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
             <UserProfileHeader user={user} setUser={setUser} /> 
-            <StatisticsCards files={files} />
-            <FilesAndProjects files={files} setFiles={setFiles} />
+            <StatisticsCards files={files} projects={projects} />
+            <FilesAndProjects files={files} setFiles={setFiles} projects={projects} setAllProjects={setAllProjects} />
         </div>
       </main>
     </div>

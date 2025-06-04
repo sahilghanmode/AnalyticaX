@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllUsers, getFilesForUser, getCurrentUser, changeUserRole, deleteUser, deleteFile, archiveFile,unarchiveFile, suspendUser, reactiveUser } from "../controllers/adminControllers.js";
+import { getAllUsers, getFilesForUser, getCurrentUser, changeUserRole, deleteUser, deleteFile, archiveFile,unarchiveFile, suspendUser, reactiveUser,getAllProjects } from "../controllers/adminControllers.js";
 
 const adminRoutes=Router()
 
@@ -22,5 +22,7 @@ adminRoutes.patch('/unarchivefile/:fileId', unarchiveFile)
 adminRoutes.patch("/suspend/:userId",suspendUser)
 
 adminRoutes.patch("/reactive/:userId",reactiveUser)
+
+adminRoutes.get('/getprojects/:userId',getAllProjects)
 
 export default adminRoutes

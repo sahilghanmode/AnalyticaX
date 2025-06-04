@@ -18,6 +18,8 @@ export const AdminDataProvider = ({ children }) => {
     getUsers()
   },[])
 
+
+
   const getCurrentUserforId=async(userId)=>{
     try {
       const res=await axiosInstance.get(`/admin/currentuser/${userId}`)

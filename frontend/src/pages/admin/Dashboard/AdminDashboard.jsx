@@ -8,7 +8,6 @@ import DashboardMain from './DashboardMain'
 import { useAdminData } from '@/lib/admin-context'
 
 const AdminDashboard = () => {
-    const {allUsers}=useAdminData()
     const {user, logout}=useAuth()
     const navigate=useNavigate()
 

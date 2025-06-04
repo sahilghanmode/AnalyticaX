@@ -27,10 +27,10 @@ const DashboardMain = () => {
                 </div>
 
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full" >
-                    <TabsList className="grid grid-cols-3 w-full max-w-md mb-8">
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="users">Users</TabsTrigger>
-                        <TabsTrigger value="activity">Activity</TabsTrigger>
+                    <TabsList className="grid grid-cols-2 w-full max-w-md mb-8">
+                        <TabsTrigger value="overview" className="cursor-pointer" >Overview</TabsTrigger>
+                        <TabsTrigger value="users" className="cursor-pointer" >Users</TabsTrigger>
+                        {/* <TabsTrigger value="activity">Activity</TabsTrigger> */}
                     </TabsList>
 
                     <TabsContent value="overview" className="space-y-6">

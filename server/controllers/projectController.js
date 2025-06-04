@@ -24,7 +24,7 @@ export const createProject=async(req,res,next)=>{
         const filesData=[]
 
         for(const singleFileName of fileNames){
-            let file=await File.findOne({singleFileName, userId})
+            let file=await File.findOne({singleFileName,uplodadedBy: userId})
             if(!file){
                 const filePath = path.join(__dirname, '..', 'media', singleFileName)
                 const fileBuffer = fs.readFileSync(filePath)

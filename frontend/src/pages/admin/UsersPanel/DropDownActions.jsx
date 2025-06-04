@@ -20,9 +20,12 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
 import { axiosInstance } from '../../../../utils/axios.js'
+import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 const DropDownActions = ({ user, setUser }) => {
     const userId=user._id
+    const navigate=useNavigate()
 
     const {user:currentUser}=useAuth()
 
@@ -36,7 +39,7 @@ const DropDownActions = ({ user, setUser }) => {
             const res=await axiosInstance.patch(`/admin/suspend/${userId}`)
             if(res.data.success){
                 setUser(res.data.user)
-                console.log("suspended")
+                toast.message(res.data.message)
             }
 
 
@@ -50,7 +53,7 @@ const DropDownActions = ({ user, setUser }) => {
             const res=await axiosInstance.patch(`/admin/reactive/${userId}`)
             if(res.data.success){
                 setUser(res.data.user)
-                console.log("reactivated")
+                toast.message(res.data.message)
             }
         } catch (error) {
             console.log("error in handleReactiveUser",{error})
@@ -64,7 +67,7 @@ const DropDownActions = ({ user, setUser }) => {
 
             if(res.data.success){
                 setUser(res.data.user)
-                console.log("changed successfully")
+                toast.message(res.data.message)
             }
             
         } catch (error) {
@@ -72,8 +75,18 @@ const DropDownActions = ({ user, setUser }) => {
         }
     }
 
-    const handleDeleteUser=()=>{
-        console.log("delete user")
+    const handleDeleteUser=async()=>{
+        try {
+            const res=await axiosInstance.delete(`/admin/deleteUser/${userId}`)
+            if(res.data.success){
+                toast.message(res.data.message)
+                navigate("/admin/dashboard")
+            }else{
+                toast.error("Something went wrong")
+            }
+        } catch (error) {
+            console.log("error from handleDeleteUser",{error})
+        }
     }
 
     return (

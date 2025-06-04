@@ -9,6 +9,7 @@ import PrivateRoute from './lib/ProtectedRoute'
 import AdminLayout from './pages/admin/AdminLayout'
 import AdminDashboard from './pages/admin/Dashboard/AdminDashboard'
 import AdminUsersPanel from './pages/admin/UsersPanel/AdminUsersPanel'
+import Project from './pages/project/Project'
 
 function App() {
 
@@ -23,6 +24,14 @@ function App() {
           <Route path='/analyze' element={<Analyze />}> </Route>
 
           <Route path='/profile' element={<PrivateRoute RequiredRole={['user', 'admin']} ><Profile /></PrivateRoute>}></Route>
+          <Route
+            path='/project'
+            element={
+              <PrivateRoute RequiredRole={['user', 'admin']}>
+                <Project />
+              </PrivateRoute>
+            }
+          ></Route>
 
           <Route path='/admin' element={<AdminLayout/>}>
             <Route path='dashboard' element={<AdminDashboard/>} ></Route>

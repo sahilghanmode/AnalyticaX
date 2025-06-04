@@ -1,6 +1,7 @@
 import User from "../models/userModel.js"
 import File from "../models/fileModel.js"
 import Visualization from "../models/visualizationModel.js"
+import Project from "../models/Project.js"
 
 export const getAllUsers=async(req,res,next)=>{
     try {
@@ -65,7 +66,7 @@ export const deleteUser=async(req,res)=>{
     try {
         const userId=req.params.userId
 
-        const user=await User.findByIdAndDelete(userId);
+        const user=await User.findByIdAndDelete(userId)
 
         if(!user){
             return res.status(400).json({success:false, message:"user not found"})
@@ -182,4 +183,22 @@ export const reactiveUser=async(req,res,next)=>{
         console.error('Error reactivating user:', error);
         return res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
+}
+
+export const getAllProjects=async(req,res,next)=>{
+    try {
+        const userId=req.params.userId
+        if (!userId) {
+            return res.status(400).json({ success: false, message: "User ID is required" });
+        }
+
+        const projects = await Project.find({ user: userId })
+            .populate("files") // Optional: populate file details
+            .sort({ createdAt: -1 }); // latest first
+
+        res.status(200).json({ success: true, data: projects });
+    } catch (error) {
+        console.log("error from getallprojects controller",{error})
+        return res.status(500).json({success:false, message:"Internal sever error"})
+    }
 }

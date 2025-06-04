@@ -51,18 +51,12 @@ const UserTab = () => {
         }
     }
 
-    const getStatusBadgeVariant = (status) => {
-        switch (status) {
-            case "active":
-                return "default"
-            case "inactive":
-                return "secondary"
-            case "suspended":
-                return "destructive"
-            case "banned":
-                return "destructive"
-            default:
-                return "outline"
+    const getStatusBadgeVariant = (suspended) => {
+
+        if(suspended){
+            return "default"
+        }else{
+            return "destructive"
         }
     }
 
@@ -127,8 +121,8 @@ const UserTab = () => {
                                         </td>
 
                                         <td className="py-3 px-4">
-                                            <Badge variant={getStatusBadgeVariant(user.status)} className="w-fit">
-                                                {user.status}
+                                            <Badge variant={getStatusBadgeVariant(user.suspended)} className="w-fit">
+                                                {user.suspended==true? "Suspended" :"active" }
                                             </Badge>
                                         </td>
 
