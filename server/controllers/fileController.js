@@ -19,6 +19,7 @@ export const handleExcelUpload = async (req, res, next) => {
 
 
     const filePath = req.file.path
+    const fileName=req.file.filename
     const fileBuffer = fs.readFileSync(filePath)
     const workbook = read(fileBuffer)
     const worksheet = workbook.Sheets[workbook.SheetNames[0]]
@@ -29,6 +30,7 @@ export const handleExcelUpload = async (req, res, next) => {
       success: true,
       message: "File uploaded and parsed successfully",
       data: jsonData,
+      fileName
     })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })

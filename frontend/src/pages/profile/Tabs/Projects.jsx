@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { 
@@ -14,71 +14,40 @@ import {
 import { Card } from "@/components/ui/card"
 import { Badge } from '@/components/ui/badge'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import NewProject from './NewProject'
+import { useAuth } from '@/lib/auth-context'
+import { axiosInstance } from '../../../../utils/axios.js'
 
 const Projects = () => {
-    const [openProjectId, setOpenProjectId] = useState(null);
+    const {user}=useAuth()
+    const [openProjectId, setOpenProjectId] = useState(null)
+    const [newProjectOpen,setNewProjectOpen]=useState(false)
+    const [projectsData,setProjectData]=useState([])
 
-    const projectsData = [
-        {
-        id: 1,
-        name: "Q2 2025 Financial Analysis",
-        description: "Comprehensive analysis of Q2 2025 financial performance",
-        createdAt: "May 8, 2025",
-        updatedAt: "May 12, 2025",
-        visualizations: [
-            {
-            id: 101,
-            name: "Revenue by Department",
-            type: "Bar Chart",
-            createdAt: "May 8, 2025",
-            fileName: "revenue_by_dept_q2.xlsx",
-            },
-            {
-            id: 102,
-            name: "Expense Distribution",
-            type: "Pie Chart",
-            createdAt: "May 9, 2025",
-            fileName: "expenses_q2.xlsx",
-            },
-            {
-            id: 103,
-            name: "Profit Margin Trends",
-            type: "Line Chart",
-            createdAt: "May 12, 2025",
-            fileName: "profit_margins_q2.xlsx",
-            },
-        ],
-        },
-        {
-        id: 2,
-        name: "Customer Demographics Study",
-        description: "Analysis of customer demographics and purchasing patterns",
-        createdAt: "April 25, 2025",
-        updatedAt: "May 5, 2025",
-        visualizations: [
-            {
-            id: 201,
-            name: "Age Distribution",
-            type: "Pie Chart",
-            createdAt: "April 25, 2025",
-            fileName: "age_distribution.xlsx",
-            },
-            {
-            id: 202,
-            name: "Purchase Frequency by Region",
-            type: "Bar Chart",
-            createdAt: "May 1, 2025",
-            fileName: "regional_purchases.xlsx",
-            },
-        ],
-        },
-    ]
+    useEffect(()=>{
+      const getAllProjects=async()=>{
+        try {
+          const res=await axiosInstance.get("/project/getallProjects",{params: { userId: user._id }})
+          if(res.data.success){
+            setProjectData(res.data.data)
+          }
+        } catch (error) {
+          console.log("error fron getall projects",{error}) 
+
+        }
+      }
+      getAllProjects()
+    },[])
+
+    const handleNewProject=()=>{
+      setNewProjectOpen(true)
+    }
 
   return (
     <div className='space-y-6'>
         <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Your Projects</h2>
-            <Button className="bg-emerald-500 hover:bg-emerald-600">
+            <Button className="bg-emerald-500 hover:bg-emerald-600 cursor-pointer" onClick={handleNewProject} >
                 <Plus className="h-4 w-4 mr-2 " />
                 New Project
             </Button>
@@ -178,12 +147,14 @@ const Projects = () => {
                   <FolderKanban className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                   <h3 className="text-lg font-medium text-gray-900">No projects yet</h3>
                   <p className="text-gray-500 mt-1 mb-4">Create your first project to organize your visualizations</p>
-                  <Button className="bg-emerald-500 hover:bg-emerald-600">
+                  <Button className="bg-emerald-500 hover:bg-emerald-600" onClick={handleNewProject} >
                     <Plus className="h-4 w-4 mr-2" />
                     Create Project
                   </Button>
                 </div>
               )}
+
+              <NewProject open={newProjectOpen} onOpenChange={setNewProjectOpen} />
     </div>
   )
 }

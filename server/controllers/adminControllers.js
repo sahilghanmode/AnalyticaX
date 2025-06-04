@@ -91,7 +91,7 @@ export const deleteFile=async(req,res,next)=>{
 
         const deletedVisualizations = await Visualization.deleteMany({ file: fileId })
 
-        if(!deleteFile){
+        if(!deletedFile){
             return res.status(404).json({success:false, message:"file not found"})
         }
 
